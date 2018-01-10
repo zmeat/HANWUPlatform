@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-9">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.8.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="build_time_libs/activejdbc-instrumentation-1.4.11.jar"/>
+	<classpathentry kind="lib" path="build_time_libs/javassist-3.8.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/activejdbc-1.4.11.jar"/>
+	<classpathentry kind="lib" path="lib/javalite-common-1.4.11.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.5.10.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.5.10.jar"/>
+	<classpathentry kind="output" path="classes"/>
 </classpath>

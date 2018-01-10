@@ -21,7 +21,7 @@ public class Container {
 	}
 	
 	private void registerServices() {
-		this.registerService(this.DBPath, app.get(this.DBPath));
+		this.registerService(Container.DBPath, app.get(Container.DBPath));
 	}
 	/**
 	 * load app configuration
