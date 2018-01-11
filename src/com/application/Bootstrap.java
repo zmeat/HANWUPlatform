@@ -1,6 +1,9 @@
 package com.application;
 
-import org.apache.log4j.Logger;
+import org.javalite.activejdbc.Base;
+
+import com.database.DataBaseManager;
+import com.database.repository.TemperatureRepository;
 
 public class Bootstrap {
 	private static Logger log = Logger.getLogger(Bootstrap.class);
@@ -8,7 +11,8 @@ public class Bootstrap {
 		log.debug("the bootsrap is begin");
 		Container container = new Container();
 		
-//		System.out.println(container.getService(container.getDBPath()));
+		//Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/hanwu", "root", "");
+		TemperatureRepository.create();
 	}
 }
 
