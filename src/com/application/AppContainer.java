@@ -6,14 +6,14 @@ import java.util.Set;
 
 import com.utils.ConfigLoader;
 
-public class Container {
+public class AppContainer {
 	private final static String appDir = "./configuration/app.conf";
-	private final static String DBPath = "appdatabasepath";
+	private final static String DBPath = "./configuration/database.conf";
 	
 	private HashMap<String, String> app;
 	private HashMap<String, Object> services;
 	
-	public Container() {
+	public AppContainer() {
 		services = new HashMap<String, Object>();
 		app = new HashMap<String, String>();
 		loadAppConfiguration();
@@ -21,7 +21,7 @@ public class Container {
 	}
 	
 	private void registerServices() {
-		this.registerService(this.DBPath, app.get(this.DBPath));
+		this.registerService(AppContainer.DBPath, app.get(AppContainer.DBPath));
 	}
 	/**
 	 * load app configuration

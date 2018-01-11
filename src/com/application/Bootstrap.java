@@ -1,11 +1,16 @@
 package com.application;
 
+import org.javalite.activejdbc.Base;
+
+import com.database.DataBaseManager;
+import com.database.repository.TemperatureRepository;
 
 public class Bootstrap {
 	
 	public static void main(String[] args) throws ClassNotFoundException {
-		Container container = new Container();
+		AppContainer appContainer = new AppContainer();
 		
-//		System.out.println(container.getService(container.getDBPath()));
+		//Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/hanwu", "root", "");
+		TemperatureRepository.create();
 	}
 }
