@@ -1,7 +1,7 @@
 package com.database.models;
 
-import org.javalite.activejdbc.Model;
+import com.database.DataBaseManager;
 
-public class Temperature extends Model {
+public class Temperature extends DataBaseManager {
 
 }
