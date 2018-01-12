@@ -1,4 +1,4 @@
-package com.database.models;
+package com.ameat.models;
 
 import org.javalite.activejdbc.Model;
 
