@@ -1,14 +1,14 @@
-package com.application;
+package com.ameat.app;
 
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 
-import com.utils.ConfigLoader;
+import com.ameat.utils.ConfigLoader;
 
 public class AppContainer {
-	private final static String appDir = "./configuration/app.conf";
-	private final static String DBPath = "./configuration/database.conf";
+	private final static String appDir = "./configuration/app.properties";
+	private final static String DBPath = "./configuration/database.properties";
 	
 	private HashMap<String, String> app;
 	private HashMap<String, Object> services;
@@ -44,5 +44,9 @@ public class AppContainer {
 	
 	public static String getDBPath() {
 		return DBPath;
+	}
+	
+	public String getConfig(String key) {
+		return app.get(key);
 	}
 }

@@ -1,0 +1,4 @@
+/bin
+/bin/*
+/target/
+log4j.log

@@ -1,4 +1,4 @@
-package com.utils;
+package com.ameat.utils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.util.Properties;
 public class ConfigLoader {
 	public static Properties loadProperties(String pathName){
 		Properties properties = null;
-		pathName = UnifyFileName.getName(pathName);
+		pathName = UnifyFileName.convert(pathName);
 		InputStream configStream;
 		try {
 			configStream = new FileInputStream(pathName);
