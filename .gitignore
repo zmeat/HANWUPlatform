@@ -3,3 +3,4 @@
 /target/
 log4j.log
 .DS_Store
+classes
