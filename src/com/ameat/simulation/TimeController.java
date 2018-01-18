@@ -4,8 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import com.ameat.application.AppContainer;
-import com.ameat.utils.ConfigLoader;
+import static com.ameat.utils.ConfigLoader.config;
 
 
 public class TimeController {
@@ -20,9 +19,9 @@ public class TimeController {
 	private String stepUnit;
 	
 	public TimeController() {
-		String startStr = ConfigLoader.loadProperties(AppContainer.getConfig("simulationpath")).getProperty("starttime");
-		String endStr = ConfigLoader.loadProperties(AppContainer.getConfig("simulationpath")).getProperty("endtime");
-		String[] stepStr = ConfigLoader.loadProperties(AppContainer.getConfig("simulationpath")).getProperty("timestep").split("-");
+		String startStr = config("simulation.starttime");
+		String endStr = config("simulation.endtime");
+		String[] stepStr = config("simulation.timestep").split("-");
 		
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");  
 		this.startTime = DateTime.parse(startStr, formatter);  
@@ -41,6 +40,10 @@ public class TimeController {
 		if (this.stepUnit.equals("month")) this.currentTime = this.currentTime.plusMonths(this.stepValue);
 		if (this.stepUnit.equals("hour")) this.currentTime = this.currentTime.plusHours(this.stepValue);
 		return this.currentTime;
+	}
+	
+	public DateTime getEndTime() {
+		return this.endTime;
 	}
 	
 	public DateTime getCurrentTime() {

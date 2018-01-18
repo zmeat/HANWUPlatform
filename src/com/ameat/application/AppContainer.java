@@ -1,16 +1,14 @@
 package com.ameat.application;
 
 import java.util.HashMap;
-import java.util.Properties;
-import java.util.Set;
+import java.util.Map;
 
-import com.ameat.utils.ConfigLoader;
+import static com.ameat.utils.ConfigLoader.configs;
 
 public class AppContainer {
-	private final static String appDir = "configuration/application.properties";
 
-	private static HashMap<String, String> app = new HashMap<String, String>();
-	private static HashMap<String, Object> services = new HashMap<String, Object>();
+	private static Map<String, String> app = new HashMap<String, String>();
+	private static Map<String, Object> services = new HashMap<String, Object>();
 
 	private static void init() {
 		loadAppConfiguration();
@@ -24,13 +22,8 @@ public class AppContainer {
 	 * load app configuration
 	 */
 	private static void loadAppConfiguration() {
-		Properties prop = ConfigLoader.loadProperties(appDir);
-		Set<Object> keySet = prop.keySet();
-		for (Object key : keySet) {
-			app.put(key.toString(), prop.get(key).toString());
-		}
+		app = configs("configuration.application");
 	}
-
 
 	public static void registerService(String key, Object value) {
 		services.put(key, value);

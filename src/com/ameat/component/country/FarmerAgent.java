@@ -1,37 +1,25 @@
 package com.ameat.component.country;
 
 import com.ameat.component.AgentInterface;
+import com.ameat.simulation.TimeController;
 
 public class FarmerAgent implements AgentInterface{
 
 	@Override
-	public void getData() {
-		
+	public void init() {
+		// TODO Auto-generated method stub
+		System.out.println("init !");
 	}
 
 	@Override
-	public void compute() {
-		
+	public void compute(	TimeController timeController) {
+		System.out.println("i cycle");
 	}
-
+	
 	@Override
-	public void store() {
-		
-	}
-
-	@Override
-	public void startYear() {
-		
-	}
-
-	@Override
-	public void everyday() {
-		
-	}
-
-	@Override
-	public void endYear() {
-		
+	public void finished() {
+		// TODO Auto-generated method stub
+		System.out.println("simulation finished");
 	}
 
 }
