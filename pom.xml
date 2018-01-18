@@ -26,6 +26,7 @@
 	          <target>1.8</target>
 	        </configuration>
 	      </plugin>
+	      
           <plugin>
               <groupId>org.javalite</groupId>
               <artifactId>activejdbc-instrumentation</artifactId>
@@ -39,7 +40,6 @@
                   </execution>
               </executions>
           </plugin>
-
 
           <plugin>
               <groupId>org.javalite</groupId>
@@ -66,6 +66,7 @@
                   </dependency>
               </dependencies>
           </plugin>
+          
     </plugins>
     <pluginManagement>
     	<plugins>
@@ -159,5 +160,10 @@
 	    <artifactId>poi-ooxml</artifactId>  
 	    <version>3.13</version>  
 	</dependency>
+  	<dependency>
+  		<groupId>joda-time</groupId>
+  		<artifactId>joda-time</artifactId>
+  		<version>2.9.9</version>
+  	</dependency>
   </dependencies>
 </project>

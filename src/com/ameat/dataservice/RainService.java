@@ -1,4 +1,4 @@
-package com.ameat.repository;
+package com.ameat.dataservice;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import com.ameat.utils.Jexcel;
 import com.ameat.models.Rain;
 
-public class RainRepository {
-	private static Logger logger  = Logger.getLogger(RainRepository.class); 
+public class RainService {
+	private static Logger logger  = Logger.getLogger(RainService.class); 
     
     /**
      * save one item to database
@@ -43,7 +43,7 @@ public class RainRepository {
 				String date = datas.get(i)[0];
 				String rainfall = datas.get(i)[j];
 				
-				RainRepository.create(new String[] {station, date, rainfall});
+				RainService.create(new String[] {station, date, rainfall});
 			}
 		}
 	}
