@@ -2,8 +2,7 @@ package com.ameat.component;
 
 import com.ameat.simulation.TimeController;
 
-public interface AgentInterface {
-	
+public interface CompInterface {
 	
 	public void init();
 	

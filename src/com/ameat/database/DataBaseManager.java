@@ -1,9 +1,7 @@
 package com.ameat.database;
 
 import org.javalite.activejdbc.Base;
-
-import com.ameat.application.AppContainer;
-import static com.ameat.utils.ConfigLoader.config;
+import static com.ameat.utils.ConfigurationLoader.config;
 
 
 
