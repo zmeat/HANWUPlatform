@@ -1,18 +1,13 @@
 package com.ameat.component;
 
+import com.ameat.simulation.TimeController;
 
 public interface AgentInterface {
 	
-	public void getData();
 	
-	public void compute();
+	public void init();
 	
-	public void store();
+	public void compute(TimeController timeController);
 	
-	public void startYear();
-	
-	public void everyday();
-	
-	public void endYear();
-	
+	public void finished();
 }

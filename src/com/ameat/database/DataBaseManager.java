@@ -3,15 +3,15 @@ package com.ameat.database;
 import org.javalite.activejdbc.Base;
 
 import com.ameat.application.AppContainer;
-import com.ameat.utils.ConfigLoader;
+import static com.ameat.utils.ConfigLoader.config;
+
 
 
 public abstract class DataBaseManager implements DataBaseInterface{
-	private static String dbPath = AppContainer.getConfig("dbpath");
-	private static String driver = ConfigLoader.loadProperties(dbPath).getProperty(DataBaseInterface.driver);
-	private static String url = ConfigLoader.loadProperties(dbPath).getProperty(DataBaseInterface.url);
-	private static String userName = ConfigLoader.loadProperties(dbPath).getProperty(DataBaseInterface.userName);
-	private static String password = ConfigLoader.loadProperties(dbPath).getProperty(DataBaseInterface.password);
+	private static String driver = config("database."+DataBaseInterface.driver);
+	private static String url = config("database."+DataBaseInterface.url);
+	private static String userName = config("database."+DataBaseInterface.userName);
+	private static String password = config("database."+DataBaseInterface.password);
 	
 	public DataBaseManager() {
 		
