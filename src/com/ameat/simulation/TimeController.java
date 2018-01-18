@@ -4,17 +4,14 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import static com.ameat.utils.ConfigLoader.config;
+import static com.ameat.utils.ConfigurationLoader.config;
 
 
 public class TimeController {
 
 	private DateTime startTime;
-
 	private DateTime endTime;
-	
 	private DateTime currentTime;
-
 	private int stepValue;
 	private String stepUnit;
 	

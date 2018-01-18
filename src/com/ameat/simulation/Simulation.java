@@ -1,9 +1,7 @@
 package com.ameat.simulation;
 
-import com.ameat.application.AppContainer;
-import com.ameat.component.AgentInterface;
-
-import static com.ameat.utils.ConfigLoader.*;
+import com.ameat.component.CompInterface;
+import com.ameat.utils.ConfigurationLoader;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,63 +10,48 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 public class Simulation {
-	// app container
-	private AppContainer appContainer;
 	
-	// time controller
 	private TimeController timeController;
+	private Logger logger = Logger.getLogger(this.getClass());
+	private Map<String, CompInterface> components;
 	
-	// logger
-	private Logger logger;
-	
-	// simulation components
-	private Map<String, String> components;
-	private Map<String, AgentInterface> agents;
-	
-	public Simulation(AppContainer appContainer, TimeController timeController) {
-		this.appContainer = appContainer;
+	public Simulation(TimeController timeController) {
 		this.timeController = timeController;
-		this.agents = new HashMap<String, AgentInterface>();
-		this.logger = Logger.getLogger(this.getClass());
-		this.setComponents();
-		this.setAgents();
+		this.components = new HashMap<String, CompInterface>();
+		this.registerComponents();
 	}
 	
 	public void run() {
 		// simulation cycle
 		while( this.timeController.getCurrentTime().isBefore(this.timeController.getEndTime()) ) {
-			for(int i=0; i<this.agents.size(); i++) {
-				AgentInterface agent = this.agents.get(i+"");
+			for(int i=0; i<this.components.size(); i++) {
+				CompInterface agent = this.components.get(i+"");
 				agent.compute(timeController);
 			}
-			logger.info(this.timeController.getCurrentTime()+" simulation finished !");
+			logger.info(this.timeController.getCurrentTime()+" ->");
 			this.timeController.nextTime();
 		}
 		// simulation finished
-		for(int i=0; i<this.agents.size(); i++) {
-			AgentInterface agent = this.agents.get(""+i);
+		for(int i=0; i<this.components.size(); i++) {
+			CompInterface agent = this.components.get(""+i);
 			agent.finished();
 		}
 		logger.info("simulation over !");
 	}
 	
-	private void setAgents() {
-		Collection<String> values = this.components.values();
+	private void registerComponents() {
+		Collection<String> values = ConfigurationLoader.configs("simulation.component").values();
 		for(String value: values) {
 			try {
 				Class<?> claz = Class.forName(value.split(":")[0]);
-				AgentInterface agent = (AgentInterface) claz.newInstance();
-				this.agents.put(value.split(":")[1].toString(), agent);
+				CompInterface agent = (CompInterface) claz.newInstance();
+				this.components.put(value.split(":")[1].toString(), agent);
 				agent.init();
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
 		}
 		logger.info("Agent init sucessed !");
-	}
-
-	private void setComponents() {
-		this.components = configs("simulation.component");
 	}
 
 }

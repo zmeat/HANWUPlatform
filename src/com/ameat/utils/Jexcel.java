@@ -25,8 +25,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ameat.application.AppContainer;
-
 
 /**
  * excel读写工具类 */
@@ -35,7 +33,7 @@ public class Jexcel {
     private static Logger logger  = Logger.getLogger(Jexcel.class);
     private final static String xls = "xls";
     private final static String xlsx = "xlsx";
-    private final static String excelExportDir = AppContainer.getConfig("excelexportdir");
+    private final static String excelExportDir = ConfigurationLoader.config("application.excelexportdir");
 
     /**
      * Read Excel File And Return a List

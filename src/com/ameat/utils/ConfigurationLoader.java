@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class ConfigLoader {
+public class ConfigurationLoader {
 	private static String configurationDir = "configuration/";
 	private static String tail = ".properties";
 	
