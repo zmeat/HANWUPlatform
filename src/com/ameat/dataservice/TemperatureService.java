@@ -1,4 +1,4 @@
-package com.ameat.repository;
+package com.ameat.dataservice;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import org.javalite.activejdbc.Model;
 import com.ameat.models.Temperature;
 import com.ameat.utils.Jexcel;
 
-public class TemperatureRepository {
-    private static Logger logger  = Logger.getLogger(TemperatureRepository.class); 
+public class TemperatureService {
+    private static Logger logger  = Logger.getLogger(TemperatureService.class); 
     
     /**
      * save one item to database
@@ -39,7 +39,7 @@ public class TemperatureRepository {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String fileName = Temperature.getTableName() + "_export_" + df.format(new Date());
 		List<HashMap<String, String>> headers = getExportExcelHeader();
-		String getDataFunc = TemperatureRepository.class.getName() + ":getExportData";
+		String getDataFunc = TemperatureService.class.getName() + ":getExportData";
 		Object[] args = new Object[0];
 		Jexcel.writeExcel(sheetName, fileName, getDataFunc, headers, args);
 	}
@@ -67,7 +67,7 @@ public class TemperatureRepository {
 				String date = datas.get(i)[0];
 				String degree = datas.get(i)[j];
 				
-				TemperatureRepository.create(new String[] {county, date, degree});
+				TemperatureService.create(new String[] {county, date, degree});
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package com.ameat.repository;
+package com.ameat.dataservice;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import com.ameat.models.RiverFlow;
 import com.ameat.utils.Jexcel;
 
-public class RiverFlowRepository {
-	private static Logger logger  = Logger.getLogger(RiverFlowRepository.class); 
+public class RiverFlowService {
+	private static Logger logger  = Logger.getLogger(RiverFlowService.class); 
     
     /**
      * save one item to database
@@ -43,7 +43,7 @@ public class RiverFlowRepository {
 				String date = datas.get(i)[0];
 				String flow = datas.get(i)[j];
 				
-				RiverFlowRepository.create(new String[] {riverName, date, flow});
+				RiverFlowService.create(new String[] {riverName, date, flow});
 			}
 		}
 	}
