@@ -8,7 +8,8 @@ public class Bootstrap {
 	public static void main(String[] args) {
 		
 		TimeController timeController = new TimeController();
-		
+//		DataBaseManager.open();
 		new Simulation(timeController).run();
+//		DataBaseManager.close();
 	}
 }
