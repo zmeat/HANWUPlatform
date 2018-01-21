@@ -69,6 +69,7 @@ public class Simulation {
 		logger.info("simulation start, components are initialized !");
 	}
 
+	
 	/**
 	 * register component , register comunications, register sequence
 	 */
@@ -97,10 +98,4 @@ public class Simulation {
 		Collections.sort(this.sequence);
 	}
 	
-	
-	public static void main(String[] args) {
-		Simulation s = new Simulation(new TimeController());
-		s.run();
-	}
-
 }

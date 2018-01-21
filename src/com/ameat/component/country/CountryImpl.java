@@ -11,14 +11,21 @@ import com.ameat.simulation.TimeController;
 public class CountryImpl implements CompInterface{
 	
 	private Logger logger = Logger.getLogger(this.getClass());
-	private CountrySchedule farmerModel;
+	private CountrySchedule countrySchedule;
 	private TimeController timeController;
 	private Map<String, ComunicationInterface> comunications;
 
 	@Override
+	public void init(TimeController timeController, Map<String, ComunicationInterface> comunications) {
+		this.timeController = timeController;
+		this.comunications = comunications;
+		this.countrySchedule = new CountrySchedule();
+	}
+	
+	@Override
 	public void compute() {
 		logger.info("CountryImpl cycling ");
-		this.farmerModel.testGetET(comunications);
+		this.countrySchedule.testGetET(comunications);
 //		farmerModel.loadToCompute(timeController);
 	}
 	
@@ -27,12 +34,6 @@ public class CountryImpl implements CompInterface{
 		logger.info("CountryImpl finished ");
 	}
 
-	@Override
-	public void init(TimeController timeController, Map<String, ComunicationInterface> comunications) {
-		this.timeController = timeController;
-		this.comunications = comunications;
-		this.farmerModel = new CountrySchedule();
-	}
 
 	@Override
 	public void anchorCompute() {

@@ -35,17 +35,15 @@ public class MeteorologyImpl implements CompInterface, MeteorologyToCountry{
 
 	@Override
 	public void finished() {
+		
 	}
+
 
 	/**
-	 * provide information for other components:
+	 * provide information for other comunications:
 	 */
 	@Override
-	public Evapotraspiration getEvaporeaspiration(String location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getETo(String location) {
+		return this.meteorologySchedule.getET().getETo(location);
 	}
-
-
-
 }

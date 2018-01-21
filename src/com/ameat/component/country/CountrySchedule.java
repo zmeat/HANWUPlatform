@@ -8,13 +8,11 @@ import com.ameat.component.meteorology.Evapotraspiration;
 import com.ameat.simulation.TimeController;
 
 public class CountrySchedule{
-	private Evapotraspiration ET;
-	
 	
 	protected void loadToCompute(TimeController tc) {
 	}
 	protected void testGetET(Map<String, ComunicationInterface> comunications) {
 		MeteorologyToCountry mTc = (MeteorologyToCountry)comunications.get("Meteorology");
-		System.out.println("=-=-=-=-=-test+comunications==="+mTc.getEvaporeaspiration("luanping").getETc());
+		System.out.println("=-=-=-=-=-test+comunications==="+mTc.getETo("LuanPing"));
 	}
 }
