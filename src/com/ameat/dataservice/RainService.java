@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.ameat.tables.Rain;
 import com.ameat.utils.Jexcel;
-import com.ameat.models.Rain;
 
 public class RainService {
 	private static Logger logger  = Logger.getLogger(RainService.class); 

@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.javalite.activejdbc.Model;
 
-import com.ameat.models.Temperature;
+import com.ameat.tables.Temperature;
 import com.ameat.utils.Jexcel;
 
 public class TemperatureService {
@@ -82,12 +82,13 @@ public class TemperatureService {
 		List<HashMap<String, String>> headers = new ArrayList<HashMap<String, String>>();
 		
 		for (String item : headerAttibutes) {
-			HashMap<String, String> header = new HashMap<String, String>();
-			if(Temperature.tableMap.get(item) != null) {
-				header.put("key", item);
-				header.put("value", Temperature.tableMap.get(item));
-				headers.add(header);				
-			}
+			Map<String, String> header = new HashMap<String, String>();
+			header = Temperature.getComments(Temperature.getTableName());
+//			if(Temperature.get(item) != null) {
+//				header.put("key", item);
+//				header.put("value", Temperature.tableMap.get(item));
+//				headers.add(header);				
+//			}
 
 		}
 		

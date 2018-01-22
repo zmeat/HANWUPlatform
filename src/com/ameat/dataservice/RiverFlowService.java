@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.ameat.models.RiverFlow;
+import com.ameat.tables.RiverFlow;
 import com.ameat.utils.Jexcel;
 
 public class RiverFlowService {
