@@ -12,8 +12,11 @@ public class Farmer {
 	private double sense;     // 敏感因子
 	// 土地及每亩地的耕种成本
 	private double cropArea;
+	
+	private double totalIrrigation;
 	private double irrigation;
-	// 生产
+	
+	// 每年的累计生产
 	private double riceYield;       
 	private double maizeYield;
 	private double income;
@@ -31,11 +34,16 @@ public class Farmer {
 		
 		this.cropArea = cropArea;
 		this.irrigation = 0.0;
+		this.totalIrrigation = 0.0;
 		
 		this.income = 0.0;
 		this.riceYield = 0.0;
 		this.maizeYield = 0.0;
 	}
+	
+	
+	
+	
 	
 	/**
 	 * 获取 每一亩的 玉米补助

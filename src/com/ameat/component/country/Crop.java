@@ -14,10 +14,18 @@ public abstract class Crop {
 	protected DateTime currentTime;
 	protected DateTime sowingTime;
 	protected DateTime harvestTime;
-	// 变化的根系层深度
+	// 变化的根系层深度,在该模型中设为定值
 	protected Double Zr;
-	// 土壤水消耗比
+	// 土壤水消耗比:随ETc变化
 	protected Double p;
+	// 根系层消耗水量mm
+	protected double preRootDepletion;
+	protected double rootDepletion;
+	// 每天的产量
+	protected double yield;
+	protected double readliyAvailableWater;
+	protected double irrigation;
+	protected double depletion;
 	
 	/**
 	 * 获取水分胁迫系数Ks
@@ -25,14 +33,29 @@ public abstract class Crop {
 	 * @param Dr : 根系层中的消耗水量(mm)
 	 * @return
 	 */
-	public double getKs(Location location, double Dr) {
+	public double getKs(Location location, double ETo, double Dr) {
 		double Ks = 1.0;
 		double TotalAvailableWater = 1000.0*(location.getFC() - location.getWP())*this.Zr;
-		double ReadliyAvailableWater = this.p*TotalAvailableWater;
+		double ReadliyAvailableWater = this.getP(ETo)*TotalAvailableWater;
 		if(Dr > ReadliyAvailableWater && Dr < TotalAvailableWater) 
 			Ks = (TotalAvailableWater - Dr)/(TotalAvailableWater - ReadliyAvailableWater);
 		else Ks = 0.0;
 		return Ks;
+	}
+	
+	/**
+	 * 获取土壤水消耗比
+	 * @param ETo，kc
+	 * @return
+	 */
+	private double getP(double ETo) {
+		return (5.0 - this.getKc()*ETo)*0.04+this.p;
+	}
+	
+	
+	public double getRootDepletion(double ETo) {
+		
+		return 0.0;
 	}
 	
 	/**
@@ -72,7 +95,6 @@ public abstract class Crop {
 		}
 		return Kc;
 	}
-	
 }
 
 class Rice extends Crop{
@@ -88,6 +110,8 @@ class Rice extends Crop{
 		this.K.put("Kcend", 0.75);
 		this.Zr = 0.6;
 		this.p = 0.20;
+		this.preRootDepletion = 0.0;
+		this.rootDepletion = 0.0;
 		
 		this.totalDay = 150;
 		this.sowingTime = new DateTime(this.currentTime.getYear(),4,20,0,0);
@@ -109,6 +133,8 @@ class Maize extends Crop{
 		this.K.put("Kcend", 0.35);
 		this.Zr = 1.2;
 		this.p = 0.55;
+		this.preRootDepletion = 0.0;
+		this.rootDepletion = 0.0;
 		
 		this.totalDay = 150;
 		this.sowingTime = new DateTime(this.currentTime.getYear(),4,20,0,0);

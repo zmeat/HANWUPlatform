@@ -22,9 +22,12 @@ public class CountryImpl implements CompInterface{
 	
 	@Override
 	public void compute() {
-		logger.info("CountryImpl cycling ");
 //		this.countrySchedule.testGetET(comunications);
 //		farmerModel.loadToCompute(timeController);
+	}
+	@Override
+	public void anchorCompute() {
+		
 	}
 	
 	@Override
@@ -33,10 +36,5 @@ public class CountryImpl implements CompInterface{
 	}
 
 
-	@Override
-	public void anchorCompute() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

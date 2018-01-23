@@ -27,22 +27,30 @@ public class CountrySchedule{
 	}
 
 
-
-
 	protected void loadToCompute() {
 		
 		
+		
+		
+		
+		
+	}
+	
+	
+	protected void loadToAnchorCompute() {
 		
 	}
 //	protected void testGetET(Map<String, ComunicationInterface> comunications) {
 //		MeteorologyToCountry mTc = (MeteorologyToCountry)comunications.get("Meteorology");
 ////		System.out.println("=-=-=-=-=-test+comunications==="+mTc.getETo("LuanPing"));
 //	}
+	
+	
+	
+	
 	private List<Farmer> constructFarmers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 	
 }
