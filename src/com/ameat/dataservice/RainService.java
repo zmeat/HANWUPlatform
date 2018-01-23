@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.ameat.tables.Rain;
+import com.ameat.tables.Table;
 import com.ameat.utils.Jexcel;
 
 public class RainService {
@@ -23,12 +24,9 @@ public class RainService {
 		logger.info("insert station:" +data[0]+ "date:" +data[1]+ "rainfall:" +data[2]);
 	}
 
-	/**
-	 * export datas to a excel file
-	 * @param filePath
-	 */
-	public static void exportExcelData(String filePath) {
-		System.out.println("呵呵");
+	
+	public static void exportExcelData() {
+		new Table("Rain").export();
 	}
 
 	/**

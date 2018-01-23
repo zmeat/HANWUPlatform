@@ -1,22 +1,24 @@
 package com.ameat.tables;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.javalite.activejdbc.Configuration;
 import org.javalite.activejdbc.DB;
+import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.ModelDelegate;
 
-import static org.javalite.activejdbc.ModelDelegate.metaModelFor;
-import static org.javalite.activejdbc.ModelDelegate.metaModelOf;
-
-import com.ameat.database.DatabaseManager;
 import com.ameat.utils.CamelCaseHelper;
 import com.ameat.utils.ConfigurationLoader;
+import com.ameat.utils.Jexcel;
 
-// this class is write as a model constructor, do not use other tables directly
+/* this class is write as a model constructor, do not use other tables directly */
 public class Table{
 	private String tableClassPrefix = "com.ameat.tables.";
 
@@ -42,27 +44,25 @@ public class Table{
 
 	private void checkConection() {
 		if(!DB.connections().containsKey("default")) {
-			DatabaseManager.open();
+			new DB("default").open();
 		}
 	}
 
 
 	/**
 	 * Insert a piece of data and return id
-	 * @param item
-	 * @return
+	 * @param record
+	 * @return id
 	 */
 	public int insertReturnKey(Map<String, Object> record) {
 		this.model.fromMap(record);
 		this.model.insert();
-		int key = Integer.valueOf(this.model.getId().toString());
-
-		return key;
+		return Integer.valueOf(this.model.getId().toString());
 	}
 
 	/**
 	 * Insert a piece of data
-	 * @param item
+	 * @param record
 	 */
 	public boolean insertOne(Map<String, Object> record) {
 		this.model.fromMap(record);
@@ -72,7 +72,7 @@ public class Table{
 
 	/**
 	 * if the record exists, update it, if the record does not exit, insert one new record
-	 * @param item
+	 * @param record
 	 * @return
 	 */
 	public boolean save(Map<String, Object> record) {
@@ -80,9 +80,9 @@ public class Table{
 		boolean signal = true;
 
 		if(id != null) {
-			Model dbRecord = this.model.findById(id);
+			Model dbRecord = ModelDelegate.findById(this.claz, id);
 			if(dbRecord.exists()) {
-				signal = this.updateById(Integer.valueOf(id.toString()), record);
+				signal = this.updateById(Integer.valueOf(id.toString()), record) >= 1;
 			}else {
 				signal = this.insertOne(record);
 			}
@@ -96,33 +96,158 @@ public class Table{
 	/**
 	 * update one record by id
 	 * @param id
-	 * @param record
-	 * @return
+	 * @param updateParams
+	 * @return updateCount
 	 */
-	public boolean updateById(int id, Map<String, Object> record) {
-		Map<String, Object> conditions = new HashMap<String, Object>();
-		conditions.put("id", id);
-		String query = this.buildQuery(conditions);
-		String params = this.buildParams(record);
-		System.out.println(params);
-		System.out.println(query);
-		int count = ModelDelegate.update(this.claz, params, query, new Object[0]);
-
-		return count >= 1;
+	public int updateById(int id, Map<String, Object> updateParams) {
+		List<ArrayList<String>> conditions = new ArrayList<ArrayList<String>>();
+		ArrayList<String> condition = new ArrayList<String>(Arrays.asList("id", "=", String.valueOf(id)));
+		conditions.add(condition);
+		
+		return this.update(conditions, updateParams);
 	}
 	
-//	public boolean update(Map<String, Object> record) {
-//		boolean sign = true;
-//		
-//	}
+	/**
+	 * update all the records which is conform to the conditions
+	 * @param conditions
+	 * @param updateParams
+	 * @return updateCount
+	 */
+	public int update(List<ArrayList<String>> conditions, Map<String, Object> updateParams) {
+		String query = this.buildQuery(conditions);
+		String params = this.buildParams(updateParams);
+		
+		return ModelDelegate.update(this.claz, params, query, new Object[0]);
+	}
 
+	/**
+	 * get the first record which is conform to the conditions
+	 * @param conditions
+	 * @return
+	 */
+	public Map<String, Object> getOne(List<ArrayList<String>> conditions) {
+		String query = this.buildQuery(conditions);
+		Model result = ModelDelegate.findFirst(this.claz, query, new Object[0]);
+		
+		return result.toMap();
+	}
+	
+	/**
+	 * get records which is conform to the parameters
+	 * @param conditions
+	 * @param perpage
+	 * @param page
+	 * @param orderBy
+	 * @return
+	 */
+	public List<Map<String, Object>> gets(List<ArrayList<String>> conditions, long perpage, long page, String orderBy) {
+		String query = this.buildQuery(conditions);
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, query, new Object[0])
+				.limit(perpage)
+				.offset(perpage*(page-1))
+				.orderBy(orderBy);
+		
+		return result.toMaps();
+	}
+	
+	/**
+	 * get all the records which is conform to the parameters
+	 * @param conditions
+	 * @return
+	 */
+	public List<Map<String, Object>> gets(List<ArrayList<String>> conditions) {
+		String query = this.buildQuery(conditions);
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, query, new Object[0]);
+		
+		return result.toMaps();
+	}
+	
+	/**
+	 * delete the record which is conform to id
+	 * @param id
+	 * @return deletedCount
+	 */
+	public int deleteById(int id) {
+		List<ArrayList<String>> conditions = new ArrayList<ArrayList<String>>();
+		ArrayList<String> condition = new ArrayList<String>(Arrays.asList("id", "=", String.valueOf(id)));
+		conditions.add(condition);
+		
+		return this.delete(conditions);
+	}
+	
+	/**
+	 * delete all the records which is conform to the conditions
+	 * @param conditions
+	 * @return deletedCount
+	 */
+	public int delete(List<ArrayList<String>> conditions) {
+		String query = this.buildQuery(conditions);
+		return ModelDelegate.delete(this.claz, query, new Object[0]);
+	}
+	
+	/**
+	 * delete all the records in the table
+	 * @return
+	 */
+	public int delete() {
+		return ModelDelegate.deleteAll(this.claz);
+	}
+	
+	/**
+	 * count all records in the table
+	 * @return
+	 */
+	public long count() {
+		return ModelDelegate.count(this.claz);
+	}
+	
+	/**
+	 * count records which is conform to the conditions
+	 * @param conditions
+	 * @return
+	 */
+	public long count(List<ArrayList<String>> conditions) {
+		String query = this.buildQuery(conditions);
+		
+		return ModelDelegate.count(this.claz, query, new Object[0]);
+	}
+	
+	public void export() {
+		String sheetName = this.tableName;
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+		String fileName = this.tableName + "_export_" + df.format(new Date());
+		List<ArrayList<String>> conditions = new ArrayList<ArrayList<String>>();
+		this.export(sheetName, fileName, conditions);
+	}
+	
+	/**
+	 * export the whole data of the table to excel
+	 * @param sheetName
+	 * @param fileName
+	 * @param conditions
+	 */
+	public void export(String sheetName, String fileName, List<ArrayList<String>> conditions) {
+		int perpage = Integer.parseInt(ConfigurationLoader.config("application.default_perpage"));
+		int page = Integer.parseInt(ConfigurationLoader.config("application.default_page"));
+		String orderBy = ConfigurationLoader.config("application.default_order_by");
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("conditions", conditions);
+		args.put("perpage", perpage);
+		args.put("page", page);
+		args.put("orderBy", orderBy);
+		Map<String, Object> headers = this.getComments();
+		Jexcel.writeExcel(sheetName, fileName, headers, this, args);
+	}
+	
 	/**
 	 *  Get table columns' comments  eg:
 	 *  		{date=日期, updated_at=更新时间, county=县级区域, degree=温度值, created_at=创建时间, id=}
 	 * @param tableName
 	 * @return
 	 */
-	public Map<String, String> getComments() {
+	public Map<String, Object> getComments() {
 		DB db = new DB(Table.class.getSimpleName());
 		String environment = Configuration.getEnv();
 		String driver = ConfigurationLoader.config("database."+environment+".driver");
@@ -132,7 +257,7 @@ public class Table{
 		String username = ConfigurationLoader.config("database."+environment+".username");
 		String password = ConfigurationLoader.config("database."+environment+".password");
 		db.open(driver, url, username, password);
-		Map<String, String> comments = new HashMap<String, String>();
+		Map<String, Object> comments = new HashMap<String, Object>();
 		String query = "select * from COLUMNS where TABLE_NAME = '" +CamelCaseHelper.camelToSnake(this.tableName)+ "s';";
 		List<Map> lists = db.all(query);
 		db.close();
@@ -142,39 +267,32 @@ public class Table{
 		return comments;
 	}
 
-	private String buildQuery(Map<String, Object> conditions) {
+	private String buildQuery(List<ArrayList<String>> conditions) {
 		StringBuffer querySb = new StringBuffer();
-		conditions.forEach((k, v) -> {
-			querySb.append(k+" = '"+v.toString()+"', ");
+		conditions.forEach((ArrayList<String> condition) -> {
+			if(condition.size() == 2) {
+				querySb.append(condition.get(0)+" = '"+condition.get(1)+"' and ");
+			} else if (condition.size() == 3) {
+				querySb.append(condition.get(0)+" "+condition.get(1)+" '"+condition.get(2)+"' and ");
+			} else {
+				System.err.println("condition str error: " + condition.toString());
+			}
 		});
 		String queryStr = querySb.toString();
 
-		return queryStr.substring(0, queryStr.lastIndexOf(','));
+		return conditions.size() > 0 ? queryStr.substring(0, queryStr.lastIndexOf("and")) : "";
 	}
 
-	private String buildParams(Map<String, Object> record) {
+	private String buildParams(Map<String, Object> params) {
 		StringBuffer paramsSb = new StringBuffer();
-		record.forEach((k, v) -> {
+		params.forEach((k, v) -> {
 			if(k != "id") {
 				paramsSb.append(k+" = '"+v.toString()+"', ");
 			}
 		});
 		String paramsStr = paramsSb.toString();
 
-		return paramsStr.substring(0, paramsStr.lastIndexOf(','));
-	}
-
-
-	public static void main(String args[]) {
-		HashMap<String, Object> record = new HashMap<String, Object>();
-		record.put("date", "2003-02-02");
-		record.put("county", "银川");
-		record.put("degree", "50");
-		new Table("Temperature").updateById(1, record);
-		new Table("Temperature").insertReturnKey(record);
-		new Table("Temperature").insertOne(record);
-		new Table("Temperature").save(record);
-
+		return params.size() > 0 ? paramsStr.substring(0, paramsStr.lastIndexOf(',')) : "";
 	}
 
 }
