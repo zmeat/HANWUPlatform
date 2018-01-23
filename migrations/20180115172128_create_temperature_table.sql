@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `temperatures`;
 
 CREATE TABLE `temperatures` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `county` varchar(225) DEFAULT NULL COMMENT '县级区域',
   `date` date DEFAULT NULL COMMENT '日期',
   `degree` float DEFAULT NULL COMMENT '温度值',
