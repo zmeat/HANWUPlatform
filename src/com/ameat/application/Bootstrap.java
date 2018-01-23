@@ -1,8 +1,10 @@
 package com.ameat.application;
 
-import com.ameat.database.DatabaseManager;
-import com.ameat.dataservice.TemperatureService;
+import org.javalite.activejdbc.DB;
 
+import com.ameat.dataservice.RainService;
+import com.ameat.dataservice.RiverFlowService;
+import com.ameat.dataservice.TemperatureService;
 import com.ameat.simulation.Simulation;
 import com.ameat.simulation.TimeController;
 import com.ameat.utils.ConfigurationLoader;
@@ -11,11 +13,28 @@ public class Bootstrap {
 	
 	public static void main(String[] args) {
 		
-		TimeController timeController = new TimeController();
-	//	TemperatureService.importExcelData(ConfigurationLoader.config("application.excelpath"));
-	//	TemperatureService.exportExcelData();
-		new Simulation(timeController).run();
-		
-		DatabaseManager.close();
+		try {
+			TimeController timeController = new TimeController();
+			new Simulation(timeController).run();
+			
+			tempTest();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DB.closeAllConnections();
+		}
+	}
+	
+	
+	
+	// 临时的测试方法写在这里面
+	public static void tempTest() {
+		String filePath = ConfigurationLoader.config("application.excelpath");
+//		TemperatureService.importExcelData(filePath);
+//		RainService.importExcelData(filePath);
+//		RiverFlowService.importExcelData(filePath);
+//		TemperatureService.exportExcelData();
+		RainService.exportExcelData();
+		RiverFlowService.exportExcelData();
 	}
 }

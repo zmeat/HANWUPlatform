@@ -6,16 +6,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -24,7 +23,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+import com.ameat.tables.Table;
+
+import static com.ameat.utils.TypeHelper.*;
 
 /**
  * excel读写工具类 */
@@ -223,6 +229,19 @@ public class Jexcel {
         addBorderStyle(cellStyle, CellStyle.BORDER_THIN, IndexedColors.BLACK.getIndex());
         return cellStyle;
     }
+    
+    /**
+     * @param wb
+     * @return
+     */
+    private static CellStyle createFloatCellStyle(Workbook wb) {
+        CellStyle cellStyle = wb.createCellStyle();
+        cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+        addAlignStyle(cellStyle, CellStyle.ALIGN_CENTER, CellStyle.VERTICAL_CENTER);
+        addBorderStyle(cellStyle, CellStyle.BORDER_THIN, IndexedColors.BLACK.getIndex());
+        return cellStyle;
+    }
+    
 
     /**
      * @param cellStyle
@@ -259,8 +278,7 @@ public class Jexcel {
      * @param fillPattern
      * @return
      */
-    private static CellStyle addColor(CellStyle cellStyle,
-                                short backgroundColor, short fillPattern ) {
+    private static CellStyle addColor(CellStyle cellStyle, short backgroundColor, short fillPattern ) {
         cellStyle.setFillForegroundColor(backgroundColor);
         cellStyle.setFillPattern(fillPattern);
         return cellStyle;
@@ -274,84 +292,98 @@ public class Jexcel {
         return row.createCell(column);
     }
 
+    public static void writeExcel(String sheetName, String fileName, Map<String, Object> headers,
+    															Table modelInstance, Map<String, Object>args) {
+		Workbook workbook = createWorkBook(xlsx);
+	    Sheet sheet = workbook.createSheet(sheetName);
+	    writeHeader(headers, workbook, sheet);
+		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
+//		for( ; ; page++) {
+//		List<Map<String, Object>> lists = this.gets(conditions, perpage, page, orderBy);
+//		if(lists.size() > 0) {
+//			datas.addAll(lists);
+//		} else {
+//			break;
+//		}
+//	}
+
+	    writeBody(headers, datas, workbook, sheet);
+	    writeToFile(fileName, workbook);
+	}
+    
     /**
-     * Get Excel Datas
-     * @param getDataFunc
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-	private static List<Map<String, Object>> getDatas(String getDataFunc, Object[] args) {
-        String className = getDataFunc.split(":")[0];
-        String methodName = getDataFunc.split(":")[1];
-        ArrayList<Map<String, Object>> list = null;
-
-        try {
-            Class<?> getDataClass = Class.forName(className);
-            Object o = getDataClass.newInstance();
-
-            @SuppressWarnings("rawtypes")
-			Class[] argsClass = new Class[args.length];
-            for (int i = 0; i < args.length; i++) {
-                argsClass[i] = args[i].getClass();
-            }
-
-            Method method = getDataClass.getMethod(methodName, argsClass);
-            list = (ArrayList<Map<String, Object>>) method.invoke(o, args);
-        } catch(Exception e) {
-        		e.printStackTrace();
-        }
-
-        return  list != null ? list : (ArrayList<Map<String, Object>>) new ArrayList<Map<String, Object>>();
-
-    }
-
-    /**
-     *
+     * use this function when the dataSet is small
      * @param sheetName
      * @param fileName
-     * @param getDataFunc : "wholeClassName:MethodName"
+     * @param datas
      * @param headers
      */
-    public static void writeExcel(String sheetName, String fileName, String getDataFunc, List<Map<String, String>> headers, Object[] args) {
-        int rowNum = 0;
-        int columnNum = 0;
-
+    public static void writeExcel(String sheetName, String fileName, List<Map<String, Object>> datas, Map<String, Object> headers) {
     		Workbook workbook = createWorkBook(xlsx);
         Sheet sheet = workbook.createSheet(sheetName);
-        CellStyle cellStyle = createHeadCellStyle(workbook);
-        List<Map<String, Object>> datas = getDatas(getDataFunc, args);
 
-        //write header
-        Row headerRow = createRow(sheet, rowNum);
-        for(Map<String, String> header : headers) {
-            Cell cell = createCell(headerRow, columnNum);
-            cell.setCellValue(String.valueOf(header.get("value")));
-            cell.setCellStyle(cellStyle);
-            columnNum++;
-        }
+        writeHeader(headers, workbook, sheet);
+        writeBody(headers, datas, workbook, sheet);
+        writeToFile(fileName, workbook);
+    }
 
-
-        //write body
-        rowNum = 1;
+    private static Workbook writeBody(Map<String, Object> headers, List<Map<String, Object>> datas, Workbook workbook, Sheet sheet) {
         CellStyle defaultStyle = createDefaultCellStyle(workbook);
-        for(int i = rowNum; i<datas.size(); i++) {
+        CellStyle floatStyle = createFloatCellStyle(workbook);
+        for(int i=1; i<=datas.size(); i++) {
             Row bodyRow = createRow(sheet, i);
 
-            columnNum = 0;
-            for(int j = 0; j< headers.size(); j++) {
-                String key = headers.get(j).get("key");
+            int columnNum = 0;
+            for(Object key : headers.keySet()) {
                 Cell cell = createCell(bodyRow, columnNum);
+                String value = String.valueOf(datas.get(i-1).get(key));
 
-                if(isNumber(String.valueOf(datas.get(i).get(key)))) {
-                		cell.setCellValue(Float.parseFloat(String.valueOf(datas.get(i).get(key))));
+                if(isNumber(value)) {
+                		if(isDouble(value)) {
+                    		cell.setCellValue(Float.parseFloat(value));
+                    		cell.setCellStyle(floatStyle);
+                		} else {
+                    		cell.setCellValue(Integer.valueOf(value));
+                    		cell.setCellStyle(defaultStyle);
+                		}
+                } else if(isDateTime(value)) {
+                		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
+                		LocalDate dateTime = format.parseLocalDate(value);
+                		cell.setCellValue(dateTime.toString("yyyy/MM/dd HH:mm:ss"));
+	            		cell.setCellStyle(defaultStyle);
+                } else if(isDate(value)) {
+                		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");
+                		LocalDate dateTime = format.parseLocalDate(value);
+	            		cell.setCellValue(dateTime.toString("yyyy/MM/dd"));
+	            		cell.setCellStyle(defaultStyle);
                 } else {
-                		cell.setCellValue(String.valueOf(datas.get(i).get(key)));
+                		cell.setCellValue(value);
+                		cell.setCellStyle(defaultStyle);
                 }
 
-                cell.setCellStyle(defaultStyle);
+                
                 columnNum++;
             }
         }
+    		return workbook;
+    }
+
+    private static Workbook writeHeader(Map<String, Object> headers, Workbook workbook, Sheet sheet) {
+        CellStyle cellStyle = createHeadCellStyle(workbook);
+        Row headerRow = createRow(sheet, 0);
+        int columnNum = 0;
+        for(Object value : headers.values()) {
+        		sheet.setColumnWidth(columnNum, 20 * 256);
+	        	Cell cell = createCell(headerRow, columnNum);
+	        	cell.setCellValue(String.valueOf(value));
+	        	cell.setCellStyle(cellStyle);
+	        	columnNum++;
+        }
+
+        return workbook;
+    }
+
+    private static void writeToFile(String fileName, Workbook workbook) {
 
         File dir = new File(excelExportDir);
         if(!dir.exists()) {
@@ -385,31 +417,5 @@ public class Jexcel {
             }
         }
     }
-
-
-    public static boolean isInteger(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static boolean isDouble(String value) {
-        try {
-            Double.parseDouble(value);
-            if (value.contains("."))
-                return true;
-            return false;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static boolean isNumber(String value) {
-        return isInteger(value) || isDouble(value);
-    }
-
 
 }

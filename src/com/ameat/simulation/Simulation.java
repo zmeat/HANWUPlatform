@@ -35,7 +35,7 @@ public class Simulation {
 
 	public void run() {
 		// record this time simulation record to database
-		this.record();
+		this.recordSimulation();
 		
 		// simulation start, components init;
 		this.simulationStart();
@@ -103,7 +103,7 @@ public class Simulation {
 		Collections.sort(this.sequence);
 	}
 	
-	private void record() {
+	private void recordSimulation() {
 		Table sim = new Table("Simulation");
 		Map<String, Object> record = new HashMap<String, Object>();
 		StringBuffer comps = new StringBuffer();
