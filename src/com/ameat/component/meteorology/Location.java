@@ -9,6 +9,10 @@ public abstract class Location {
 	protected double u2 = 2;
 	// 调整系数:靠海会受气影响Krs=0.19，内陆为Krs=0.16
 	protected double Krs = 0.16;
+	// 土质类型：沙壤土确定田间持水量和凋萎点水量 m3 / m-3  (FAO-56) 
+	protected double FC = 0.15;
+	protected double WP = 0.06;
+	
 	// m
 	protected double H;
 	// latitude
@@ -26,6 +30,22 @@ public abstract class Location {
 	
 	public abstract double getTmin(DateTime time);
 	public abstract double getTmax(DateTime time);
+	
+	
+	/**
+	 * 获取该地区土壤类型的田间持水量 m3 / m-3
+	 * @return 
+	 */
+	public double getFC() {
+		return this.FC;
+	}
+	/**
+	 * 获取该地区土壤类型的枯萎点水量 m3 / m-3
+	 * @return
+	 */
+	public double getWP() {
+		return this.WP;
+	}
 	
 	public double getH() {
 		return this.H;

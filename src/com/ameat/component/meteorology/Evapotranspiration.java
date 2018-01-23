@@ -8,23 +8,20 @@ import org.apache.log4j.Logger;
 import com.ameat.component.country.Crop;
 import com.ameat.simulation.TimeController;
 
-public class Evapotraspiration {
+public class Evapotranspiration {
 	
 	private Logger logger = Logger.getLogger(this.getClass());
 	private TimeController tc;
-	private Double previousETo;
 	private Double currentETo;
 	private Map<String, Location> locationInfos;
-	private Map<String, Crop> cropInfos;
 	
-	public Evapotraspiration(TimeController tc) {
+	public Evapotranspiration(TimeController tc) {
 		this.tc = tc;
 		this.locationInfos = new HashMap<String, Location>();
 		this.locationInfos.put("LuanPing", new LuanPing());
 		this.locationInfos.put("ChiCheng", new ChiCheng());
 		this.locationInfos.put("FengNing", new FengNing());
-		this.cropInfos = new HashMap<String, Crop>();
-		this.previousETo = this.currentETo = 0.0;
+		this.currentETo = 0.0;
 	}
 	
 	/**
@@ -33,8 +30,6 @@ public class Evapotraspiration {
 	 * @return
 	 */
 	public Double getETo(String locationStr) {
-		// 上次ETo和当前ETo不相等，则说明ETo已更新，直接返回当前ETo
-		if( Math.abs(this.previousETo-this.currentETo) > 0.000001 ) return this.currentETo;
 		
 		Location location = locationInfos.get(locationStr);
 		// 上次ETo和当前ETo相等，更新当前ETo
@@ -78,9 +73,6 @@ public class Evapotraspiration {
 		return ETo;
 	}
 	
-	public void updateETo() {
-		this.previousETo = this.currentETo;
-	}
 
 	/**
 	 * @param T : ℃

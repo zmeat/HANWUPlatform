@@ -12,14 +12,10 @@ import com.ameat.simulation.TimeController;
 public class MeteorologyImpl implements CompInterface, MeteorologyToCountry{
 
 	private Logger logger = Logger.getLogger(this.getClass());
-	private Map<String, ComunicationInterface> connections;
-	private TimeController timeSchedule;
 	private MeteorologySchedule meteorologySchedule;
 
 	@Override
 	public void init(TimeController timeController, Map<String, ComunicationInterface> comunications) {
-		this.connections = comunications;
-		this.timeSchedule = timeController;
 		this.meteorologySchedule = new MeteorologySchedule(timeController, comunications);
 	}
 
@@ -38,12 +34,10 @@ public class MeteorologyImpl implements CompInterface, MeteorologyToCountry{
 		
 	}
 
-
-	/**
-	 * provide information for other comunications:
-	 */
 	@Override
-	public Double getETo(String location) {
-		return this.meteorologySchedule.getET().getETo(location);
+	public Evapotranspiration getET() {
+		return this.meteorologySchedule.getET();
 	}
+
+
 }
