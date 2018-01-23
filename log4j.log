@@ -1,35 +1,31 @@
-<<<<<<< HEAD
-1    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@512ddf17
-171  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@2ed94a8b
-=======
-0    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.country.CountryImpl@49c43f4ehas been registered !
-6    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.hydrology.HydrologyImpl@7fad8c79has been registered !
-7    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.meteorology.MeteorologyImpl@4df828d7has been registered !
-9    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.city.CityImpl@11e21d0ehas been registered !
-11   [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.economic.EconomicImpl@3e77a1edhas been registered !
-16   [main] INFO com.ameat.simulation.Simulation - simulationStart >>  simulation start, components are initialized !
-16   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-29   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-14T00:00:00.000+08:00 ->
-29   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-30   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-15T00:00:00.000+08:00 ->
-30   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-31   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-16T00:00:00.000+08:00 ->
-31   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-32   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-17T00:00:00.000+08:00 ->
-33   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-34   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-18T00:00:00.000+08:00 ->
-34   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-35   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-19T00:00:00.000+08:00 ->
-38   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-38   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-20T00:00:00.000+08:00 ->
-39   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-39   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-21T00:00:00.000+08:00 ->
-40   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-40   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-22T00:00:00.000+08:00 ->
-40   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-41   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-23T00:00:00.000+08:00 ->
-42   [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
-42   [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-24T00:00:00.000+08:00 ->
-43   [main] INFO com.ameat.component.country.CountryImpl - finished >>  CountryImpl finished 
-44   [main] INFO com.ameat.simulation.Simulation - simulationEnd >>  simulation end, components finished !
->>>>>>> 0fcc138b0a11d44c4a4c6b78808d9e1ad8b5287f
+0    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.country.CountryImpl@53e25b76has been registered !
+4    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.hydrology.HydrologyImpl@58d25a40has been registered !
+5    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.city.CityImpl@726f3b58has been registered !
+7    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.meteorology.MeteorologyImpl@ee7d9f1has been registered !
+8    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.economic.EconomicImpl@1edf1c96has been registered !
+356  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@6adca536
+541  [main] INFO com.ameat.simulation.Simulation - simulationStart >>  simulation start, components are initialized !
+542  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+551  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-14T00:00:00.000+08:00 ->
+551  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+551  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-15T00:00:00.000+08:00 ->
+551  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+552  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-16T00:00:00.000+08:00 ->
+552  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+552  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-17T00:00:00.000+08:00 ->
+552  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+552  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-18T00:00:00.000+08:00 ->
+552  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+553  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-19T00:00:00.000+08:00 ->
+553  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+553  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-20T00:00:00.000+08:00 ->
+553  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+553  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-21T00:00:00.000+08:00 ->
+553  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+554  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-22T00:00:00.000+08:00 ->
+554  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+554  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-23T00:00:00.000+08:00 ->
+554  [main] INFO com.ameat.component.country.CountryImpl - compute >>  CountryImpl cycling 
+554  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-24T00:00:00.000+08:00 ->
+554  [main] INFO com.ameat.component.country.CountryImpl - finished >>  CountryImpl finished 
+555  [main] INFO com.ameat.simulation.Simulation - simulationEnd >>  simulation end, components finished !

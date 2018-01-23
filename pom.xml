@@ -8,6 +8,7 @@
   <properties>
       <activejdbc.version>1.4.13</activejdbc.version>
       <environments>development</environments>
+      <migrationsPath>migrations</migrationsPath>
   </properties>
   
   <build>
@@ -48,6 +49,7 @@
               <configuration>
                   <configFile>${project.basedir}/configuration/database.properties</configFile>
                   <environments>${environments}</environments>
+                  <migrationsPath>${migrationsPath}</migrationsPath>
               </configuration>
               <executions>
                   <execution>

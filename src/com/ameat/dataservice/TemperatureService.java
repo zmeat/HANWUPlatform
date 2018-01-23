@@ -6,11 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.javalite.activejdbc.Model;
 
+import com.ameat.tables.Table;
 import com.ameat.tables.Temperature;
 import com.ameat.utils.Jexcel;
 
@@ -36,9 +36,9 @@ public class TemperatureService {
 	 */
 	public static void exportExcelData() {
 		String sheetName = Temperature.getTableName();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String fileName = Temperature.getTableName() + "_export_" + df.format(new Date());
-		List<HashMap<String, String>> headers = getExportExcelHeader();
+		List<Map<String, String>> headers = getExportExcelHeader();
 		String getDataFunc = TemperatureService.class.getName() + ":getExportData";
 		Object[] args = new Object[0];
 		Jexcel.writeExcel(sheetName, fileName, getDataFunc, headers, args);
@@ -77,20 +77,16 @@ public class TemperatureService {
 	 * Get Excel Header
 	 * @return
 	 */
-	private static List<HashMap<String, String>> getExportExcelHeader() {
-		Set<String> headerAttibutes = Temperature.attributeNames();
-		List<HashMap<String, String>> headers = new ArrayList<HashMap<String, String>>();
-		
-		for (String item : headerAttibutes) {
+	private static List<Map<String, String>> getExportExcelHeader() {
+		List<Map<String, String>> headers = new ArrayList<Map<String, String>>();
+		System.out.println(Temperature.getTableName());
+		Map<String, String> comments = new Table("Temperature").getComments();
+		comments.forEach((k, v) -> {
 			Map<String, String> header = new HashMap<String, String>();
-			header = Temperature.getComments(Temperature.getTableName());
-//			if(Temperature.get(item) != null) {
-//				header.put("key", item);
-//				header.put("value", Temperature.tableMap.get(item));
-//				headers.add(header);				
-//			}
-
-		}
+			header.put("key", k);
+			header.put("value", v);
+			headers.add(header);	
+		});
 		
 		return headers;
 	}

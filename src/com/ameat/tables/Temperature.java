@@ -1,5 +1,8 @@
 package com.ameat.tables;
 
-public class Temperature extends Base {
+import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.DbName;
+
+public class Temperature extends Model {
 
 }
