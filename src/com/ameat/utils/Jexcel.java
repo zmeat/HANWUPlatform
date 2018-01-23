@@ -312,7 +312,7 @@ public class Jexcel {
      * @param getDataFunc : "wholeClassName:MethodName"
      * @param headers
      */
-    public static void writeExcel(String sheetName, String fileName, String getDataFunc, List<HashMap<String, String>> headers, Object[] args) {
+    public static void writeExcel(String sheetName, String fileName, String getDataFunc, List<Map<String, String>> headers, Object[] args) {
         int rowNum = 0;
         int columnNum = 0;
 
@@ -323,7 +323,7 @@ public class Jexcel {
 
         //write header
         Row headerRow = createRow(sheet, rowNum);
-        for(HashMap<String, String> header : headers) {
+        for(Map<String, String> header : headers) {
             Cell cell = createCell(headerRow, columnNum);
             cell.setCellValue(String.valueOf(header.get("value")));
             cell.setCellStyle(cellStyle);

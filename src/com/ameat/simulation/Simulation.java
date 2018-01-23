@@ -2,7 +2,10 @@ package com.ameat.simulation;
 
 import com.ameat.component.comunications.ComunicationInterface;
 import com.ameat.component.interfaces.CompInterface;
+import com.ameat.tables.Table;
 import com.ameat.utils.ConfigurationLoader;
+
+import static com.ameat.utils.ConfigurationLoader.config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,6 +34,8 @@ public class Simulation {
 
 
 	public void run() {
+		// record this time simulation record to database
+		this.record();
 		
 		// simulation start, components init;
 		this.simulationStart();
@@ -96,6 +101,28 @@ public class Simulation {
 			} 
 		}
 		Collections.sort(this.sequence);
+	}
+	
+	private void record() {
+		Table sim = new Table("Simulation");
+		Map<String, Object> record = new HashMap<String, Object>();
+		StringBuffer comps = new StringBuffer();
+		
+		record.put("starttime", config("simulation.starttime"));
+		record.put("endtime", config("simulation.endtime"));
+		record.put("timestep", config("simulation.timestep"));
+		record.put("mu", config("simulation.mu"));
+		record.put("anchortime", config("simulation.anchortime"));
+		record.put("learn", config("simulation.learn"));
+		record.put("radius", config("simulation.radius"));
+		record.put("sense", config("simulation.sense"));
+		record.put("cv", config("simulation.cv"));
+		this.components.forEach((k, v) -> {
+			comps.append(v.toString().split("@")[0]+":"+k+"  ");
+		});
+		record.put("components", comps.toString());
+		
+		sim.insertReturnKey(record);
 	}
 	
 }

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `rains`;
 
 CREATE TABLE `rains` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `date` date DEFAULT NULL COMMENT '日期',
   `station` varchar(225) DEFAULT NULL COMMENT '检测站点',
   `rainfall` float DEFAULT NULL COMMENT '雨量值',

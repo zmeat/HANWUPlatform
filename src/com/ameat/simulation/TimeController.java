@@ -18,6 +18,7 @@ public class TimeController {
 	public TimeController() {
 		String startStr = config("simulation.starttime");
 		String endStr = config("simulation.endtime");
+		String anchorStr = config("simulation.anchortime");
 		String[] stepStr = config("simulation.timestep").split("-");
 		
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");  
@@ -26,7 +27,7 @@ public class TimeController {
 		this.stepValue = Integer.parseInt(stepStr[0]);
 		this.stepUnit = stepStr[1];
 		this.currentTime = this.startTime;
-		this.anchorTime = new DateTime(this.currentTime.getYear(), 12, 31, 0, 0);
+		this.anchorTime = DateTime.parse(anchorStr, formatter);
 	}
 	
 	/**

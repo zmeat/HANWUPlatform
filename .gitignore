@@ -1,7 +1,8 @@
 /bin
 /bin/*
 /target/
-log4j.log
+./log4j.log
 .DS_Store
-classes
-.classpath
+./classes
+/resource/export/*.xlsx
+/resource/export/*.xls
