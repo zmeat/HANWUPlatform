@@ -26,7 +26,7 @@ public class RiverFlowService {
 
 
 	public static void exportExcelData() {
-		new Table("RainFlow").export();
+		new Table("RiverFlow").export();
 	}
 
 	/**
