@@ -29,7 +29,7 @@ public class Evapotranspiration {
 	 * @param locationStr
 	 * @return
 	 */
-	public Double getETo(String locationStr) {
+	public double getETo(String locationStr) {
 		
 		Location location = locationInfos.get(locationStr);
 		// 上次ETo和当前ETo相等，更新当前ETo

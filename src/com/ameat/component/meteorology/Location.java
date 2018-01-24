@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 import com.ameat.simulation.TimeController;
 
 public abstract class Location {
+	protected String chineseName;
+	protected String englisName;
 	// 2m/s
 	protected double u2 = 2;
 	// 调整系数:靠海会受气影响Krs=0.19，内陆为Krs=0.16
@@ -31,6 +33,16 @@ public abstract class Location {
 	public abstract double getTmin(DateTime time);
 	public abstract double getTmax(DateTime time);
 	
+	
+	/**
+	 * 根据时间从数据库中提取降雨量mm
+	 * @param time
+	 * @return
+	 */
+	public double getPrecip(DateTime time) {
+		
+		return 0.0;
+	}
 	
 	/**
 	 * 获取该地区土壤类型的田间持水量 m3 / m-3
@@ -108,12 +120,14 @@ public abstract class Location {
 
 class LuanPing extends Location{
 	public LuanPing() {
-//		this.H = 700.0;
-//		this.angle = 40.0;
-//		this.cent = 50.0;
-		this.H = 2;
-		this.angle=13;
-		this.cent=44;
+		this.H = 700.0;
+		this.angle = 40.0;
+		this.cent = 50.0;
+		this.chineseName = "滦平";
+		this.englisName = "LuanPing";
+//		this.H = 2;
+//		this.angle=13;
+//		this.cent=44;
 		this.isNorth=true;
 	}
 
@@ -132,9 +146,12 @@ class LuanPing extends Location{
 
 class ChiCheng extends Location{
 	public ChiCheng() {
+		this.chineseName = "赤城";
+		this.englisName = "ChiCheng";
 		this.H = 945.0;
 		this.angle = 40.0;
 		this.cent = 55.0;
+		this.isNorth = true;
 	}
 
 	@Override
@@ -153,9 +170,12 @@ class ChiCheng extends Location{
 
 class FengNing extends Location{
 	public FengNing() {
+		this.chineseName = "丰宁";
+		this.englisName = "FengNing";
 		this.H = 540.0;
 		this.angle = 41.0;
 		this.cent = 12.0;
+		this.isNorth = true;
 	}
 
 	@Override

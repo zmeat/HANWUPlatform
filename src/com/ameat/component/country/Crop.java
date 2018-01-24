@@ -26,10 +26,34 @@ public abstract class Crop {
 	protected double readliyAvailableWater;
 	protected double irrigation;
 	protected double depletion;
+	// 最大产量 kg/mu
+	protected double yieldMax;
+	
+	/**
+	 * 更新根系层水量消耗，每一个timeStep只能调用一次，包含更新preRootDepletion
+	 * @param ETo : mm
+	 * @param I   : 考虑到 灌溉效率 和 土壤盐分控制的淋洗（避免深层渗漏损失水量滤掉根系层养分）
+	 * @return rootDepletion
+	 */
+	public double updateDeletion(double ETo, double I) {
+		double temp = this.rootDepletion;
+		this.rootDepletion = this.preRootDepletion + (ETo*this.getKc()) - I;
+		this.preRootDepletion = temp;
+		return this.rootDepletion;
+	}
+	
+	public double getDeletion() {
+		return this.rootDepletion;
+	}
+	
+	public double getPreDeletion() {
+		return this.preRootDepletion;
+	}
 	
 	/**
 	 * 获取水分胁迫系数Ks
 	 * @param location:通过Location获取土壤的田间持水量和田间枯萎量
+	 * @param ETo: 参考作物蒸发蒸腾量
 	 * @param Dr : 根系层中的消耗水量(mm)
 	 * @return
 	 */
@@ -39,8 +63,20 @@ public abstract class Crop {
 		double ReadliyAvailableWater = this.getP(ETo)*TotalAvailableWater;
 		if(Dr > ReadliyAvailableWater && Dr < TotalAvailableWater) 
 			Ks = (TotalAvailableWater - Dr)/(TotalAvailableWater - ReadliyAvailableWater);
-		else Ks = 0.0;
+		else if(Dr > TotalAvailableWater) Ks = 0.0;
 		return Ks;
+	}
+	
+	/**
+	 * Readliy Available Water
+	 * @param location : 地理位置
+	 * @param ETo ： 参考作物蒸发蒸腾量
+	 * @return
+	 */
+	public double getRAW(Location location, double ETo) {
+		double TotalAvailableWater = 1000.0*(location.getFC() - location.getWP())*this.Zr;
+		double ReadliyAvailableWater = this.getP(ETo)*TotalAvailableWater;
+		return ReadliyAvailableWater;
 	}
 	
 	/**
@@ -108,6 +144,7 @@ class Rice extends Crop{
 		this.K.put("Kcini", 1.05);
 		this.K.put("Kcmid", 1.20);
 		this.K.put("Kcend", 0.75);
+		this.yieldMax = 716.0;
 		this.Zr = 0.6;
 		this.p = 0.20;
 		this.preRootDepletion = 0.0;
@@ -131,6 +168,7 @@ class Maize extends Crop{
 		this.K.put("Kcini", 0.30);
 		this.K.put("Kcmid", 1.20);
 		this.K.put("Kcend", 0.35);
+		this.yieldMax = 540;
 		this.Zr = 1.2;
 		this.p = 0.55;
 		this.preRootDepletion = 0.0;

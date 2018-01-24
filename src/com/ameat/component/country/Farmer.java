@@ -1,10 +1,13 @@
 package com.ameat.component.country;
 
+import org.joda.time.DateTime;
+
 public class Farmer {
 	private int simId;
 	private int simYear;
 	private int farmerId;
 	private String location;
+	private DateTime time;
 	
 	private double mu;        // 旱地占总耕种面积的比例
 	private double learn;     // 学习因子
@@ -14,16 +17,17 @@ public class Farmer {
 	private double cropArea;
 	
 	private double totalIrrigation;
-	private double irrigation;
+	private double irr;
 	
 	// 每年的累计生产
 	private double riceYield;       
 	private double maizeYield;
 	private double income;
 	
-	public Farmer(int simId, int simYear, int farmerId, String location, double mu, double learn, double radius, double senes, double cropArea) {
+	public Farmer(int simId, DateTime time, int farmerId, String location, double mu, double learn, double radius, double senes, double cropArea) {
 		this.simId = simId;
-		this.simYear = simYear;
+		this.simYear = time.getYear();
+		this.time =  time;
 		this.farmerId = farmerId;
 		this.location = location;
 		
@@ -33,7 +37,7 @@ public class Farmer {
 		this.sense = senes;
 		
 		this.cropArea = cropArea;
-		this.irrigation = 0.0;
+		this.irr = 0.0;
 		this.totalIrrigation = 0.0;
 		
 		this.income = 0.0;
