@@ -35,5 +35,16 @@ public class Generator {
 		}
 		return result;
 	}
+	
+	/**
+	 * 返回一个服从N(mean, (cv*mean)^2)的随机数
+	 * @param mean
+	 * @param cv
+	 * @return
+	 */
+	public static double Normal(double mean, double cv) {
+		Random random = new Random();
+		return cv*mean*random.nextGaussian() + mean;
+	}
 
 }

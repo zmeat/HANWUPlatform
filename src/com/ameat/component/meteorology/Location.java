@@ -32,17 +32,8 @@ public abstract class Location {
 	
 	public abstract double getTmin(DateTime time);
 	public abstract double getTmax(DateTime time);
+	public abstract double getPrecip(DateTime time);
 	
-	
-	/**
-	 * 根据时间从数据库中提取降雨量mm
-	 * @param time
-	 * @return
-	 */
-	public double getPrecip(DateTime time) {
-		
-		return 0.0;
-	}
 	
 	/**
 	 * 获取该地区土壤类型的田间持水量 m3 / m-3
@@ -142,6 +133,12 @@ class LuanPing extends Location{
 		// TODO Auto-generated method stub
 		return 34.8;
 	}
+
+	@Override
+	public double getPrecip(DateTime time) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
 
 class ChiCheng extends Location{
@@ -162,6 +159,12 @@ class ChiCheng extends Location{
 
 	@Override
 	public double getTmax(DateTime time) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getPrecip(DateTime time) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -186,6 +189,12 @@ class FengNing extends Location{
 
 	@Override
 	public double getTmax(DateTime time) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getPrecip(DateTime time) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

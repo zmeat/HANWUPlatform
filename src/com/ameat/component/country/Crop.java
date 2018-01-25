@@ -18,37 +18,9 @@ public abstract class Crop {
 	protected Double Zr;
 	// 土壤水消耗比:随ETc变化
 	protected Double p;
-	// 根系层消耗水量mm
-	protected double preRootDepletion;
-	protected double rootDepletion;
-	// 每天的产量
-	protected double yield;
-	protected double readliyAvailableWater;
-	protected double irrigation;
-	protected double depletion;
 	// 最大产量 kg/mu
 	protected double yieldMax;
-	
-	/**
-	 * 更新根系层水量消耗，每一个timeStep只能调用一次，包含更新preRootDepletion
-	 * @param ETo : mm
-	 * @param I   : 考虑到 灌溉效率 和 土壤盐分控制的淋洗（避免深层渗漏损失水量滤掉根系层养分）
-	 * @return rootDepletion
-	 */
-	public double updateDeletion(double ETo, double I) {
-		double temp = this.rootDepletion;
-		this.rootDepletion = this.preRootDepletion + (ETo*this.getKc()) - I;
-		this.preRootDepletion = temp;
-		return this.rootDepletion;
-	}
-	
-	public double getDeletion() {
-		return this.rootDepletion;
-	}
-	
-	public double getPreDeletion() {
-		return this.preRootDepletion;
-	}
+
 	
 	/**
 	 * 获取水分胁迫系数Ks
@@ -147,8 +119,6 @@ class Rice extends Crop{
 		this.yieldMax = 716.0;
 		this.Zr = 0.6;
 		this.p = 0.20;
-		this.preRootDepletion = 0.0;
-		this.rootDepletion = 0.0;
 		
 		this.totalDay = 150;
 		this.sowingTime = new DateTime(this.currentTime.getYear(),4,20,0,0);
@@ -171,8 +141,6 @@ class Maize extends Crop{
 		this.yieldMax = 540;
 		this.Zr = 1.2;
 		this.p = 0.55;
-		this.preRootDepletion = 0.0;
-		this.rootDepletion = 0.0;
 		
 		this.totalDay = 150;
 		this.sowingTime = new DateTime(this.currentTime.getYear(),4,20,0,0);

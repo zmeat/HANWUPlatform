@@ -14,7 +14,7 @@ public class CountrySchedule{
 	private TimeController timeController;
 	private Map<String, ComunicationInterface> comunications;
 	private Map<String, Crop> cropInfos;
-	private List<Farmer> farmerInfos;
+	private Map<String, List<Farmer>> farmerInfos;
 	
 	public CountrySchedule(TimeController timeController, Map<String, ComunicationInterface> comunications) {
 		this.timeController = timeController;
@@ -24,6 +24,12 @@ public class CountrySchedule{
 		this.cropInfos.put("maize", new Maize(timeController.getCurrentTime()));
 		// 根据simulation table生成农民信息并存放在farmer_init表中,再构造赋值给所有的farmer -------------------未实现
 		this.farmerInfos = constructFarmers();
+	}
+
+
+	private Map<String, List<Farmer>> constructFarmers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
@@ -48,9 +54,5 @@ public class CountrySchedule{
 	
 	
 	
-	private List<Farmer> constructFarmers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
