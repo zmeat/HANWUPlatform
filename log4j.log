@@ -1,4 +1,1 @@
-0    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@383534aa
-90   [main] WARN org.javalite.activejdbc.Configuration - getEnv >>  Environment variable ACTIVE_ENV not provided, defaulting to 'development'
-102  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@12bc6874
-1295 [main] INFO com.ameat.utils.Jexcel - writeToFile >>  write file :resource/export/test.xlsx finish!
+0    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@4c3e4790
