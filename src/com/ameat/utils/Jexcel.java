@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,12 +17,14 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -119,7 +122,7 @@ public class Jexcel {
 
             if(fileName.endsWith(xls)){
                 workbook = new HSSFWorkbook(in);
-            }else if(fileName.endsWith(xlsx)){
+            } else if (fileName.endsWith(xlsx)){
                 workbook = new XSSFWorkbook(in);
             }
         }catch(IOException e){
@@ -198,9 +201,10 @@ public class Jexcel {
      */
     private static Workbook createWorkBook(String type) {
         Workbook workbook = null;
+        ZipSecureFile.setMinInflateRatio(0.001);
 
         if(type == xlsx) {
-        		workbook = new XSSFWorkbook();
+        		workbook = new SXSSFWorkbook(100);
         } else {
         		workbook = new HSSFWorkbook();
         }
@@ -229,7 +233,7 @@ public class Jexcel {
         addBorderStyle(cellStyle, CellStyle.BORDER_THIN, IndexedColors.BLACK.getIndex());
         return cellStyle;
     }
-    
+
     /**
      * @param wb
      * @return
@@ -241,7 +245,7 @@ public class Jexcel {
         addBorderStyle(cellStyle, CellStyle.BORDER_THIN, IndexedColors.BLACK.getIndex());
         return cellStyle;
     }
-    
+
 
     /**
      * @param cellStyle
@@ -292,25 +296,35 @@ public class Jexcel {
         return row.createCell(column);
     }
 
+    /**
+     * this function is build for model export
+     * @param sheetName
+     * @param fileName
+     * @param headers
+     * @param modelInstance
+     * @param args
+     */
     public static void writeExcel(String sheetName, String fileName, Map<String, Object> headers,
     															Table modelInstance, Map<String, Object>args) {
 		Workbook workbook = createWorkBook(xlsx);
 	    Sheet sheet = workbook.createSheet(sheetName);
-	    writeHeader(headers, workbook, sheet);
-		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
-//		for( ; ; page++) {
-//		List<Map<String, Object>> lists = this.gets(conditions, perpage, page, orderBy);
-//		if(lists.size() > 0) {
-//			datas.addAll(lists);
-//		} else {
-//			break;
-//		}
-//	}
-
-	    writeBody(headers, datas, workbook, sheet);
-	    writeToFile(fileName, workbook);
+        @SuppressWarnings("unchecked")
+		List<String> conditions =  (ArrayList<String>)args.get("conditions");
+        int perpage = (int) args.get("perpage");
+        int page = (int) args.get("page");
+        String orderBy = (String) args.get("orderBy");
+        setHeader(headers, workbook, sheet);
+		for( ; ; page++) {
+			List<Map<String, Object>> datas = modelInstance.gets(conditions, perpage, page, orderBy);
+			if(datas.size() > 0) {
+				setBody(headers, datas, workbook, sheet);
+			} else {
+				writeToFile(workbook, fileName);
+				break;
+			}
+		}
 	}
-    
+
     /**
      * use this function when the dataSet is small
      * @param sheetName
@@ -322,16 +336,19 @@ public class Jexcel {
     		Workbook workbook = createWorkBook(xlsx);
         Sheet sheet = workbook.createSheet(sheetName);
 
-        writeHeader(headers, workbook, sheet);
-        writeBody(headers, datas, workbook, sheet);
-        writeToFile(fileName, workbook);
+        setHeader(headers, workbook, sheet);
+        setBody(headers, datas, workbook, sheet);
+        writeToFile(workbook, fileName);
     }
 
-    private static Workbook writeBody(Map<String, Object> headers, List<Map<String, Object>> datas, Workbook workbook, Sheet sheet) {
+    private static Workbook setBody(Map<String, Object> headers, List<Map<String, Object>> datas, Workbook workbook, Sheet sheet) {
         CellStyle defaultStyle = createDefaultCellStyle(workbook);
         CellStyle floatStyle = createFloatCellStyle(workbook);
+        int lastRowNum = sheet.getLastRowNum();
+        System.out.println("lastRowNum: "+ lastRowNum);
+
         for(int i=1; i<=datas.size(); i++) {
-            Row bodyRow = createRow(sheet, i);
+            Row bodyRow = createRow(sheet, lastRowNum+i);
 
             int columnNum = 0;
             for(Object key : headers.keySet()) {
@@ -348,8 +365,8 @@ public class Jexcel {
                 		}
                 } else if(isDateTime(value)) {
                 		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS");
-                		LocalDate dateTime = format.parseLocalDate(value);
-                		cell.setCellValue(dateTime.toString("yyyy/MM/dd HH:mm:ss"));
+                		DateTime dateTime = DateTime.parse(value, format);
+                		cell.setCellValue(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
 	            		cell.setCellStyle(defaultStyle);
                 } else if(isDate(value)) {
                 		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");
@@ -361,14 +378,16 @@ public class Jexcel {
                 		cell.setCellStyle(defaultStyle);
                 }
 
-                
                 columnNum++;
             }
         }
+
+        datas.clear(); // to release memory timely
+
     		return workbook;
     }
 
-    private static Workbook writeHeader(Map<String, Object> headers, Workbook workbook, Sheet sheet) {
+    private static Workbook setHeader(Map<String, Object> headers, Workbook workbook, Sheet sheet) {
         CellStyle cellStyle = createHeadCellStyle(workbook);
         Row headerRow = createRow(sheet, 0);
         int columnNum = 0;
@@ -383,13 +402,12 @@ public class Jexcel {
         return workbook;
     }
 
-    private static void writeToFile(String fileName, Workbook workbook) {
-
+    private static void writeToFile(Workbook workbook, String fileName) {
+    		OutputStream outputStream = null;
         File dir = new File(excelExportDir);
         if(!dir.exists()) {
             dir.mkdirs();
         }
-        //default write xlsx
         String filePath = excelExportDir + fileName + "." + xlsx;
         File file = new File(filePath);
         if(!file.exists()) {
@@ -400,22 +418,22 @@ public class Jexcel {
 			}
         }
 
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(file);
+	    	try {
+	    		outputStream = new FileOutputStream(file);
             workbook.write(outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(outputStream != null) {
-                try {
-                    outputStream.close();
-                    logger.info("write file :" +filePath+ " finish!");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+            outputStream.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+	        // close the outputStream
+	        if(outputStream != null) {
+	            try {
+	                outputStream.close();
+	                logger.info("write file :" +filePath+ " finish!");
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+		}
     }
-
 }

@@ -167,5 +167,10 @@
   		<artifactId>joda-time</artifactId>
   		<version>2.9.9</version>
   	</dependency>
+  	<dependency>
+  		<groupId>org.json</groupId>
+  		<artifactId>json</artifactId>
+  		<version>20171018</version>
+  	</dependency>
   </dependencies>
 </project>

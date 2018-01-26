@@ -30,10 +30,10 @@ public class Bootstrap {
 	// 临时的测试方法写在这里面
 	public static void tempTest() {
 		String filePath = ConfigurationLoader.config("application.excelpath");
-//		TemperatureService.importExcelData(filePath);
-//		RainService.importExcelData(filePath);
-//		RiverFlowService.importExcelData(filePath);
-//		TemperatureService.exportExcelData();
+		TemperatureService.importExcelData(filePath);
+		RainService.importExcelData(filePath);
+		RiverFlowService.importExcelData(filePath);
+		TemperatureService.exportExcelData();
 		RainService.exportExcelData();
 		RiverFlowService.exportExcelData();
 	}
