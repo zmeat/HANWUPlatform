@@ -2,6 +2,6 @@ package com.ameat.tables;
 
 import org.javalite.activejdbc.Model;
 
-public class Simulation extends Model {
-	
+public class FarmerAnchor extends Model {
+
 }

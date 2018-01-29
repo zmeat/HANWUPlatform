@@ -31,19 +31,19 @@ public class Table{
 	public Table(String tableName){
 		this.tableName = tableName;
 		this.checkConection();
-		this.newModel();
-		
-	}
-	
-	private void newModel() {
 		try {
 			@SuppressWarnings("unchecked")
 			Class<? extends Model> claz = (Class<? extends Model>) Class.forName(tableClassPrefix+tableName);
-			this.model = (Model) claz.newInstance();
 			this.claz = claz;
+			this.model = (Model) claz.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void resetModel() {
+		// to refresh the model in order to avoid dirty data
+		this.model.reset();
 	}
 
 	private void checkConection() {
@@ -61,8 +61,9 @@ public class Table{
 	public int insertReturnKey(Map<String, Object> record) {
 		this.model.fromMap(record);
 		this.model.insert();
-		this.newModel();
-		return Integer.valueOf(this.model.getId().toString());
+		int id = Integer.valueOf(this.model.getId().toString());
+		this.resetModel();
+		return id;
 	}
 
 	/**
@@ -72,8 +73,8 @@ public class Table{
 	public boolean insertOne(Map<String, Object> record) {
 		this.model.fromMap(record);
 		boolean sign = this.model.insert();
-		this.newModel();
-		
+		this.resetModel();
+
 		return  sign;
 	}
 
@@ -96,8 +97,8 @@ public class Table{
 		} else {
 			signal = this.insertOne(record);
 		}
-		this.newModel();
-		
+		this.resetModel();
+
 		return signal;
 	}
 
@@ -140,6 +141,48 @@ public class Table{
 	}
 
 	/**
+	 * get the first record which is conform to the orderBy
+	 * @param conditions
+	 * @return
+	 */
+	public Map<String, Object> getOne(String orderBy) {
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, "", new Object[0])
+				.limit(1)
+				.offset(0)
+				.orderBy(orderBy);
+		
+		return result.size() > 0 ? result.get(0).toMap() : new HashMap<String, Object>();
+	}
+
+	/**
+	 * get the first record which is conform to the orderBy
+	 * @param conditions
+	 * @return the instance of the model
+	 */
+	public Model getOneM(String orderBy) {
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, "", new Object[0])
+				.limit(1)
+				.offset(0)
+				.orderBy(orderBy);
+		
+		return result.size() > 0 ? result.get(0) : null;
+	}
+
+	/**
+	 * get the first record which is conform to the conditions
+	 * @param conditions
+	 * @return the instance of the model
+	 */
+	public Model getOneM(List<String> conditions) {
+		String query = this.buildQuery(conditions);
+		Model result = ModelDelegate.findFirst(this.claz, query, new Object[0]);
+
+		return result;
+	}
+
+	/**
 	 * get records which is conform to the parameters
 	 * @param conditions
 	 * @param perpage
@@ -169,6 +212,23 @@ public class Table{
 				.where(this.claz, query, new Object[0]);
 
 		return result.toMaps();
+	}
+
+	/**
+	 * get all the records which is conform to the parameters
+	 * @param conditions
+	 * @return the instance list of models
+	 */
+	public List<Model> getsM(List<String> conditions) {
+		String query = this.buildQuery(conditions);
+		LazyList<? extends Model> datas = ModelDelegate
+				.where(this.claz, query, new Object[0]);
+		List<Model> results = new ArrayList<Model>();
+		for(Model item : datas) {
+			results.add(item);
+		}
+
+		return results;
 	}
 
 	/**
