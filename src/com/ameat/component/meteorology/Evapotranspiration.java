@@ -73,6 +73,9 @@ public class Evapotranspiration {
 		return ETo;
 	}
 	
+	public Location getLocation(String locationStr) {
+		return this.locationInfos.get(locationStr);
+	}
 
 	/**
 	 * @param T : ℃

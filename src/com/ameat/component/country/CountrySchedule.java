@@ -14,23 +14,27 @@ public class CountrySchedule{
 	private TimeController timeController;
 	private Map<String, ComunicationInterface> comunications;
 	private Map<String, Crop> cropInfos;
-	private List<Farmer> farmerInfos;
+	private Map<String, List<Farmer>> farmerInfos;
+	private double totalArea;
 	
 	public CountrySchedule(TimeController timeController, Map<String, ComunicationInterface> comunications) {
 		this.timeController = timeController;
 		this.comunications = comunications;
 		this.cropInfos = new HashMap<String, Crop>();
-		this.cropInfos.put("rice", new Rice(timeController.getCurrentTime()));
-		this.cropInfos.put("maize", new Maize(timeController.getCurrentTime()));
+		this.cropInfos.put("rice", new Rice(timeController));
+		this.cropInfos.put("maize", new Maize(timeController));
 		// 根据simulation table生成农民信息并存放在farmer_init表中,再构造赋值给所有的farmer -------------------未实现
 		this.farmerInfos = constructFarmers();
 	}
 
 
+	private Map<String, List<Farmer>> constructFarmers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	protected void loadToCompute() {
-		
-		
-		
 		
 		
 		
@@ -40,17 +44,6 @@ public class CountrySchedule{
 	protected void loadToAnchorCompute() {
 		
 	}
-//	protected void testGetET(Map<String, ComunicationInterface> comunications) {
-//		MeteorologyToCountry mTc = (MeteorologyToCountry)comunications.get("Meteorology");
-////		System.out.println("=-=-=-=-=-test+comunications==="+mTc.getETo("LuanPing"));
-//	}
 	
-	
-	
-	
-	private List<Farmer> constructFarmers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
