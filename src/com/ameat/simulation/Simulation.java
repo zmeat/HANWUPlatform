@@ -39,7 +39,7 @@ public class Simulation {
 		
 		// simulation start, components init;
 		this.simulationStart();
-		
+		 
 		// simulation cycle
 		while( this.timeController.getCurrentTime().isBefore(this.timeController.getEndTime()) ) {
 			for(Integer i : this.sequence) {

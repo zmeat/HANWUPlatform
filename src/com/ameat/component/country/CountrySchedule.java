@@ -24,14 +24,10 @@ public class CountrySchedule{
 		this.cropInfos.put("rice", new Rice(timeController));
 		this.cropInfos.put("maize", new Maize(timeController));
 		// 根据simulation table生成农民信息并存放在farmer_init表中,再构造赋值给所有的farmer -------------------未实现
-		this.farmerInfos = constructFarmers();
+		this.farmerInfos = constructFarmers(timeController, this.cropInfos);
 	}
 
 
-	private Map<String, List<Farmer>> constructFarmers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 	protected void loadToCompute() {
@@ -45,5 +41,12 @@ public class CountrySchedule{
 		
 	}
 	
+	private Map<String, List<Farmer>> constructFarmers(TimeController timeController2, Map<String, Crop> cropInfos2) {
+	    // 从farmer_init中取出所有农民信息构造函数
+		
+		
+		
+		return null;
+	}
 	
 }

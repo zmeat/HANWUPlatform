@@ -19,41 +19,42 @@ public class Farmer {
 	private Map<String, Crop> cropInfos;
 	
 	// 一次定型
+	private String locationStr;
 	private int simId;
-	private int farmerId; //每个村按照0开始编码
-	private String locationEn;
+	private int farmerNumber;             
+	private int farmerNo;                //每个村按照0开始编码
 	private double cropArea;             // 作物面积
-	private int farmerNum;
 	
 	private double learn;         // 学习因子
 	private double radius;        // 信息半径
 	private double sense;         // 敏感因子
 	
 	// 限制用水，每天累加，年度更新
-	private double limitWater;           // 作物用水限制， -1(<0)为不限用水，(>=0)为限制用水 ,单位:立方米 一次定型
+	private double waterLimit;           // 作物用水限制， -1(<0)为不限用水，(>=0)为限制用水 ,单位:立方米 一次定型
 	private double daysWater;            // 立方米，每天不变
-	private double remainingWater;       // 立方米，每天更新，年底不变
+	private double waterRemaining;       // 立方米，每天更新，年底不变
 	
 	// 每天不变，年度更新 - 4
-	private double mu;            // 旱地占总耕种面积的比例
-	private double muPre;
+	private double currentMu;            // 旱地占总耕种面积的比例
+	private double previousMu;
 	private double riceArea;      
 	private double maizeArea;     
 	// 每天没有，年底结算 - 4
 	private double cropIncome;    // 作物中收入，包含补贴
 	private double riceIncome;    
-	private double maizeIncome; 
+	private double maizeIncome;    
+	private double maizeConsumeWater; // 立方米
+	private double riceConsumeWater;  // 立方米
 	private double consumeWater;   // 立方米
 	
 	// 每天累加，年度清零 - 7
-	private double precipitation;        // 年度累计降雨量
-	private double precipDuringRice;      //水稻生长期间累计降雨量
-	private double precipDuringMaize;     // 玉米生长期间累计降雨量
-	private double riceYield;              // 水稻累计亩产量
+	private double precipitation;        // 年度累计降雨量  mm
+	private double ricePrecipitation;      //水稻生长期间累计降雨量 mm
+	private double maziePrecipitation;     // 玉米生长期间累计降雨量 mm
+	private double riceYield;              // 水稻累计亩产量  kg/mu
+	private double maizeYield;             // 玉米累计亩产量  kg/mu
 	private double riceIrrigation;         // 水稻累计灌溉量  mm
-	private double maizeYield;             // 玉米累计亩产量
 	private double maizeIrrigation;        // 玉米累计灌溉量  mm
-	
 
 	// 每天更新，年度清零 - 5
 	private double precip;           // 该地区每天的降雨情况
@@ -80,27 +81,28 @@ public class Farmer {
 		// 初始化表示参数
 		this.tc =  tc;
 		this.cropInfos = cropInfos;
-		this.simId = simId;
-		this.farmerId = farmerId;
-		this.locationEn = location;
 		
-		this.mu = mu;
-		this.muPre = Generator.Normal(mu, 0.2);
-		while(this.muPre < 0.0 || this.muPre > 1.0) this.muPre = Generator.Normal(mu, 0.2);
+		this.simId = simId;
+		this.farmerNo = farmerId;
+		this.locationStr = location;
+		this.currentMu = mu;
+		this.previousMu = Generator.Normal(mu, 0.2);
+		while(this.previousMu < 0.0 || this.previousMu > 1.0) this.previousMu = Generator.Normal(mu, 0.2);
 		this.learn = learn;
 		this.radius = radius;
 		this.sense = senes;
 		this.cropArea = cropArea;
-		this.farmerNum = farmerNum;
+		
+		this.farmerNumber = farmerNum;
+		this.waterLimit = waterPermit;
 		// 初始化每年的调整参数
 		this.maizeArea = mu*cropArea;
 		this.cropArea = cropArea - this.maizeArea;
 		
 		// 限制用水
-		this.limitWater = waterPermit;
 		this.daysWater = waterPermit / 
 				Math.abs(cropInfos.get("rice").getHarvestTime().getDayOfYear() - cropInfos.get("maize").getSowingTime().getDayOfYear());
-		this.remainingWater = 0;
+		this.waterRemaining = 0;
 		
 		// 清零
 		yearValueToZero();
@@ -115,7 +117,10 @@ public class Farmer {
 				+ (this.maizeArea*this.getMaizeSubsidy());
 		this.riceIncome = (this.riceYield * this.riceArea * this.getRicePrice()) - (this.riceArea*this.getRiceCost());
 		this.cropIncome = this.maizeIncome + this.riceIncome;
-		this.consumeWater = this.mmTom3(this.riceArea, this.riceIrrigation) + this.mmTom3(this.maizeArea, this.maizeIrrigation);
+		this.riceConsumeWater = this.mmTom3(this.riceArea, this.riceIrrigation);
+		this.maizeConsumeWater = this.mmTom3(this.maizeArea, this.maizeIrrigation);
+		this.consumeWater = this.riceConsumeWater + this.maizeConsumeWater;
+		
 	}
 	
 	/**
@@ -124,8 +129,9 @@ public class Farmer {
 	 */
 	protected void updateStrategy(Map<String, List<Farmer>> totalFarmers) {
 		double incomePerArea = this.cropIncome / this.cropArea; 
-		List<Farmer> farmers = totalFarmers.get(this.locationEn);
+		List<Farmer> farmers = totalFarmers.get(this.locationStr);
 		int r = (int) this.radius;
+		
 		// 对高出的差价敏感
 		int count1 = 0;
 		double muAccumu1 = 0.0;
@@ -137,7 +143,7 @@ public class Farmer {
 		
 		// 遍历邻居，进行学习
 		for(int i=0; i<r; i++) {
-			int index = (this.farmerId + (i+1)) % farmers.size();
+			int index = (this.farmerNo + (i+1)) % farmers.size();
 			double incomePerAreaI =  farmers.get(index).getCropIncome() / farmers.get(index).getCropArea();
 			double muI = farmers.get(index).getMu();
 			if(incomePerAreaI > incomePerArea*2*this.sense && incomePerAreaI > incomePerArea) {
@@ -152,25 +158,25 @@ public class Farmer {
 			}
 		}
 		
-		double muTemp = this.mu;
+		double muTemp = this.currentMu;
 		if(priority == 1) {
-			this.mu = this.learn*((muAccumu1/count1) - this.mu) + this.muPre;
+			this.currentMu = this.learn*((muAccumu1/count1) - this.currentMu) + this.previousMu;
 		}else {
-			if( (count2 / r) > (0.5*this.sense) ) this.mu = this.learn*((muAccumu2/count2) - this.mu) + this.muPre;
-			else this.mu = this.learn*(this.mu - this.muPre) + this.muPre;
+			if( (count2 / r) > (0.5*this.sense) ) this.currentMu = this.learn*((muAccumu2/count2) - this.currentMu) + this.previousMu;
+			else this.currentMu = this.learn*(this.currentMu - this.previousMu) + this.previousMu;
 		}
-		this.muPre = muTemp;
+		this.previousMu = muTemp;
 		
-		this.maizeArea = this.cropArea * this.mu;	
+		this.maizeArea = this.cropArea * this.currentMu;	
 		this.riceArea = this.cropArea - this.maizeArea;
 		yearValueToZero();
 	}
 	
 	
 	protected void daysWithWaterStress(Evapotranspiration ET) {
-		double ETo = ET.getETo(this.locationEn);
-		Location location = ET.getLocation(this.locationEn);
-		this.remainingWater += this.daysWater;
+		double ETo = ET.getETo(this.locationStr);
+		Location location = ET.getLocation(this.locationStr);
+		this.waterRemaining += this.daysWater;
 		
 		// 每天更新      1
 		this.precip = location.getPrecip(tc.getCurrentTime());
@@ -188,20 +194,20 @@ public class Farmer {
 				this.riceIrri = this.riceDr - this.precip;
 				if(this.riceIrri < 0.0) this.riceIrri = 0.0;
 				// 现在持有的水量所能灌溉的深度
-				double tempmm = this.muTomm(this.riceArea, this.remainingWater);
+				double tempmm = this.muTomm(this.riceArea, this.waterRemaining);
 				if(this.riceIrri < tempmm) {
 					// 剩余水量为灌溉后所剩的水量
-					this.remainingWater = this.remainingWater - this.mmTom3(this.riceArea, this.riceIrri);
+					this.waterRemaining = this.waterRemaining - this.mmTom3(this.riceArea, this.riceIrri);
 				}else {
 					// 所需灌溉深度大于现有水量
 					this.riceIrri = tempmm;
-					this.remainingWater = 0.0;
+					this.waterRemaining = 0.0;
 				}
 			}
 			this.riceDr = this.riceDr - this.precip - this.riceIrri + this.cropInfos.get("rice").getETcadj(location, ETo, this.riceDr);
 			if(this.riceDr < 0.0) this.riceDr = 0.0;
 			// 每天累加 2,3,4
-			this.precipDuringRice += this.precip;
+			this.ricePrecipitation += this.precip;
 			this.riceIrrigation += this.riceIrri;
 			this.riceYield += this.cropInfos.get("rice").getYieldActually(location, ETo, this.riceDr);
 		}
@@ -217,20 +223,20 @@ public class Farmer {
 				this.maizeIrri = this.maizeDr - this.precip;
 				if(this.maizeIrri < 0.0) this.maizeIrri = 0.0;
 				// 现在持有的水量所能灌溉的深度
-				double tempmm = this.muTomm(this.maizeArea, this.remainingWater);
+				double tempmm = this.muTomm(this.maizeArea, this.waterRemaining);
 				if(this.maizeIrri < tempmm) {
 					// 剩余水量为灌溉后所剩的水量
-					this.remainingWater = this.remainingWater - this.mmTom3(this.maizeArea, this.maizeIrri);
+					this.waterRemaining = this.waterRemaining - this.mmTom3(this.maizeArea, this.maizeIrri);
 				}else {
 					// 所需灌溉深度大于现有水量
 					this.maizeIrri = tempmm;
-					this.remainingWater = 0.0;
+					this.waterRemaining = 0.0;
 				}
 			}
 			this.maizeDr = this.maizeDr - this.precip - this.maizeIrri + this.cropInfos.get("maize").getETcadj(location, ETo, this.maizeDr);
 			if(this.maizeDr < 0.0) this.maizeDr = 0.0;
 			
-			this.precipDuringMaize += this.precip;
+			this.maziePrecipitation += this.precip;
 			this.maizeIrrigation += this.maizeIrri;
 			this.maizeYield += this.cropInfos.get("maize").getYieldActually(location, ETo, this.maizeDr);
 		}
@@ -243,8 +249,8 @@ public class Farmer {
  * @param cropInfos
  */
 	protected void daysWithoutWaterStress(Evapotranspiration ET, Map<String, Crop> cropInfos) {
-		double ETo = ET.getETo(this.locationEn);
-		Location location = ET.getLocation(this.locationEn);
+		double ETo = ET.getETo(this.locationStr);
+		Location location = ET.getLocation(this.locationStr);
 		
 		// 每天更新      1
 		this.precip = location.getPrecip(tc.getCurrentTime());
@@ -265,7 +271,7 @@ public class Farmer {
 			this.riceDr = this.riceDr - this.precip - this.riceIrri + ETo*this.cropInfos.get("rice").getKc();
 			if(this.riceDr < 0.0) this.riceDr = 0.0;
 			// 每天累加 2,3,4
-			this.precipDuringRice += this.precip;
+			this.ricePrecipitation += this.precip;
 			this.riceIrrigation += this.riceIrri;
 			this.riceYield += this.cropInfos.get("rice").getYeildMaxOfDay();
 		}
@@ -287,7 +293,7 @@ public class Farmer {
 			if(this.maizeDr < 0.0) this.maizeDr = 0.0;
 			
 			// 每天累加 5，6，7
-			this.precipDuringMaize += this.precip;
+			this.maziePrecipitation += this.precip;
 			this.maizeIrrigation += this.maizeIrri;
 			this.maizeYield += this.cropInfos.get("maize").getYeildMaxOfDay();
 		}
@@ -295,7 +301,7 @@ public class Farmer {
 	}
 	
 	public double getMu() {
-		return this.mu;
+		return this.currentMu;
 	}
 	protected double getCropArea() {
 		return this.cropArea;
@@ -305,14 +311,15 @@ public class Farmer {
 	}
 	
 	private void yearValueToZero() {
+		
 		this.cropIncome = 0.0;
 		this.riceIncome = 0.0;
 		this.maizeIncome = 0.0;
 		this.consumeWater = 0.0;
 		
 		this.precipitation = 0.0;
-		this.precipDuringMaize = 0.0;
-		this.precipDuringRice = 0.0;
+		this.maziePrecipitation = 0.0;
+		this.ricePrecipitation = 0.0;
 		this.riceYield = 0.0;
 		this.riceIrrigation = 0.0;
 		this.maizeYield = 0.0;
@@ -341,14 +348,14 @@ public class Farmer {
 	 * @return double : 元/kg
 	 */
 	private double getMaizePrice() {
-		return 2.172;
+		return 2.1;
 	}
 	/**
 	 * 获取水稻价格
 	 * @return double : 元/kg
 	 */
 	private double getRicePrice() {
-		return 2.957;
+		return 5.0;
 	}
 	/**
 	 * 水稻每亩的成本：种子、化肥、农药
