@@ -92,7 +92,7 @@ public class Simulation {
 				File[] subListFiles = subFile.listFiles();
 				for(File f : subListFiles) {
 					if(f.getName().startsWith(subKey+"To")) {
-						comunications.put(subKey, component);
+						comunications.put(subKey.toLowerCase(), component);
 					}
 				}
 				logger.info(component + "has been registered !");

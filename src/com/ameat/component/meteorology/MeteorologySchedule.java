@@ -20,6 +20,28 @@ public class MeteorologySchedule {
 		this.ET = new Evapotranspiration(timeController);
 	}
 	
+	
+	protected void loadToCompute() {
+		
+		
+	}
+	
+	
+	protected void loadToAnchorCompute() {
+		
+		
+		
+	}
+	
+	
+	protected void loadToFinish() {
+		
+		
+		
+	}
+	
+	
+	
 	public Evapotranspiration getET() {
 		return this.ET;
 	}

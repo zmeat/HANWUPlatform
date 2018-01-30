@@ -1,5 +1,1 @@
-0    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@1055e4af
-54   [main] WARN org.javalite.activejdbc.Registry - fetchMetaParams >>  Failed to retrieve metadata for table: 'farmer_anchors'. Are you sure this table exists? For some databases table names are case sensitive.
-152  [main] WARN org.javalite.activejdbc.Configuration - getEnv >>  Environment variable ACTIVE_ENV not provided, defaulting to 'development'
-160  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@73035e27
-1408 [main] INFO com.ameat.utils.Jexcel - writeToFile >>  write file :resource/export/fdfdf.xlsx finish!
+0    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@4c3e4790

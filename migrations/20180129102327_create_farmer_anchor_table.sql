@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS `farmer_traces`;
+DROP TABLE IF EXISTS `farmer_anchors`;
 
-CREATE TABLE `farmer_traces` (
+CREATE TABLE `farmer_anchors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `farmer_id` int(11) unsigned DEFAULT NULL COMMENT '农民序号',
   `time` datetime DEFAULT NULL COMMENT '模拟时间',
