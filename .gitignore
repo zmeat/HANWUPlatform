@@ -3,6 +3,5 @@
 /target/
 ./log4j.log
 .DS_Store
-./classes
 /resource/export/*.xlsx
 /resource/export/*.xls
