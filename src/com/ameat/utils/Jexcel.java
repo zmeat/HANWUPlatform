@@ -309,13 +309,13 @@ public class Jexcel {
 		Workbook workbook = createWorkBook(xlsx);
 	    Sheet sheet = workbook.createSheet(sheetName);
         @SuppressWarnings("unchecked")
-		List<String> conditions =  (ArrayList<String>)args.get("conditions");
+		String[] conditions =  (String[]) args.get("conditions");
         int perpage = (int) args.get("perpage");
         int page = (int) args.get("page");
         String orderBy = (String) args.get("orderBy");
         setHeader(headers, workbook, sheet);
 		for( ; ; page++) {
-			List<Map<String, Object>> datas = modelInstance.gets(conditions, perpage, page, orderBy);
+			List<Map<String, Object>> datas = modelInstance.gets(perpage, page, orderBy, conditions);
 			if(datas.size() > 0) {
 				setBody(headers, datas, workbook, sheet);
 			} else {

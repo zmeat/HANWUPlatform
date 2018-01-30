@@ -31,19 +31,19 @@ public class Table{
 	public Table(String tableName){
 		this.tableName = tableName;
 		this.checkConection();
-		this.newModel();
-		
-	}
-	
-	private void newModel() {
 		try {
 			@SuppressWarnings("unchecked")
 			Class<? extends Model> claz = (Class<? extends Model>) Class.forName(tableClassPrefix+tableName);
-			this.model = (Model) claz.newInstance();
 			this.claz = claz;
+			this.model = (Model) claz.newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void resetModel() {
+		// to refresh the model in order to avoid dirty data
+		this.model.reset();
 	}
 
 	private void checkConection() {
@@ -61,8 +61,9 @@ public class Table{
 	public int insertReturnKey(Map<String, Object> record) {
 		this.model.fromMap(record);
 		this.model.insert();
-		this.newModel();
-		return Integer.valueOf(this.model.getId().toString());
+		int id = Integer.valueOf(this.model.getId().toString());
+		this.resetModel();
+		return id;
 	}
 
 	/**
@@ -72,8 +73,8 @@ public class Table{
 	public boolean insertOne(Map<String, Object> record) {
 		this.model.fromMap(record);
 		boolean sign = this.model.insert();
-		this.newModel();
-		
+		this.resetModel();
+
 		return  sign;
 	}
 
@@ -96,8 +97,8 @@ public class Table{
 		} else {
 			signal = this.insertOne(record);
 		}
-		this.newModel();
-		
+		this.resetModel();
+
 		return signal;
 	}
 
@@ -108,19 +109,16 @@ public class Table{
 	 * @return updateCount
 	 */
 	public int updateById(int id, Map<String, Object> updateParams) {
-		List<String> conditions = new ArrayList<String>();
-		conditions.add("id = "+String.valueOf(id));
-
-		return this.update(conditions, updateParams);
+		return this.update(updateParams, "id = "+String.valueOf(id));
 	}
 
 	/**
 	 * update all the records which is conform to the conditions
-	 * @param conditions
 	 * @param updateParams
+	 * @param conditions
 	 * @return updateCount
 	 */
-	public int update(List<String> conditions, Map<String, Object> updateParams) {
+	public int update(Map<String, Object> updateParams, String ... conditions) {
 		String query = this.buildQuery(conditions);
 		String params = this.buildParams(updateParams);
 
@@ -129,25 +127,47 @@ public class Table{
 
 	/**
 	 * get the first record which is conform to the conditions
+	 * @param orderBy
 	 * @param conditions
 	 * @return
 	 */
-	public Map<String, Object> getOne(List<String> conditions) {
+	public Map<String, Object> getOne(String orderBy, String ... conditions) {
 		String query = this.buildQuery(conditions);
-		Model result = ModelDelegate.findFirst(this.claz, query, new Object[0]);
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, query, new Object[0])
+				.limit(1)
+				.offset(0)
+				.orderBy(orderBy);
+		
+		return result.size() > 0 ? result.get(0).toMap() : new HashMap<String, Object>();
+	}
 
-		return result.toMap();
+	/**
+	 * get the first record which is conform to the conditions
+	 * @param orderBy
+	 * @param conditions
+	 * @return the instance of the model
+	 */
+	public Model getOneM(String orderBy, String ... conditions) {
+		String query = this.buildQuery(conditions);
+		LazyList<? extends Model> result = ModelDelegate
+				.where(this.claz, query, new Object[0])
+				.limit(1)
+				.offset(0)
+				.orderBy(orderBy);
+		
+		return result.size() > 0 ? result.get(0) : null;
 	}
 
 	/**
 	 * get records which is conform to the parameters
-	 * @param conditions
 	 * @param perpage
 	 * @param page
 	 * @param orderBy
+	 * @param conditions
 	 * @return
 	 */
-	public List<Map<String, Object>> gets(List<String> conditions, long perpage, long page, String orderBy) {
+	public List<Map<String, Object>> gets(long perpage, long page, String orderBy, String ... conditions) {
 		String query = this.buildQuery(conditions);
 		LazyList<? extends Model> result = ModelDelegate
 				.where(this.claz, query, new Object[0])
@@ -163,7 +183,7 @@ public class Table{
 	 * @param conditions
 	 * @return
 	 */
-	public List<Map<String, Object>> gets(List<String> conditions) {
+	public List<Map<String, Object>> gets(String ... conditions) {
 		String query = this.buildQuery(conditions);
 		LazyList<? extends Model> result = ModelDelegate
 				.where(this.claz, query, new Object[0]);
@@ -172,15 +192,29 @@ public class Table{
 	}
 
 	/**
+	 * get all the records which is conform to the parameters
+	 * @param conditions
+	 * @return the instance list of models
+	 */
+	public List<Model> getsM(String ... conditions) {
+		String query = this.buildQuery(conditions);
+		LazyList<? extends Model> datas = ModelDelegate
+				.where(this.claz, query, new Object[0]);
+		List<Model> results = new ArrayList<Model>();
+		for(Model item : datas) {
+			results.add(item);
+		}
+
+		return results;
+	}
+
+	/**
 	 * delete the record which is conform to id
 	 * @param id
 	 * @return deletedCount
 	 */
 	public int deleteById(int id) {
-		List<String> conditions = new ArrayList<String>();
-		conditions.add("id = "+String.valueOf(id));
-
-		return this.delete(conditions);
+		return this.delete("id = "+String.valueOf(id));
 	}
 
 	/**
@@ -188,7 +222,7 @@ public class Table{
 	 * @param conditions
 	 * @return deletedCount
 	 */
-	public int delete(List<String> conditions) {
+	public int delete(String ... conditions) {
 		String query = this.buildQuery(conditions);
 		return ModelDelegate.delete(this.claz, query, new Object[0]);
 	}
@@ -214,7 +248,7 @@ public class Table{
 	 * @param conditions
 	 * @return
 	 */
-	public long count(List<String> conditions) {
+	public long count(String ... conditions) {
 		String query = this.buildQuery(conditions);
 
 		return ModelDelegate.count(this.claz, query, new Object[0]);
@@ -224,17 +258,16 @@ public class Table{
 		String sheetName = this.tableName;
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String fileName = this.tableName + "_export_" + df.format(new Date());
-		List<String> conditions = new ArrayList<String>();
-		this.export(sheetName, fileName, conditions);
+		this.export(sheetName, fileName);
 	}
 
 	/**
 	 * export the whole data of the table to excel
-	 * @param sheetName
 	 * @param fileName
+	 * @param sheetName
 	 * @param conditions
 	 */
-	public void export(String sheetName, String fileName, List<String> conditions) {
+	public void export(String fileName, String sheetName, String ... conditions) {
 		int perpage = Integer.parseInt(ConfigurationLoader.config("application.default_perpage"));
 		int page = Integer.parseInt(ConfigurationLoader.config("application.default_page"));
 		String orderBy = ConfigurationLoader.config("application.default_order_by");
@@ -273,7 +306,7 @@ public class Table{
 		return comments;
 	}
 
-	private String buildQuery(List<String> conditions) {
+	private String buildQuery(String[] conditions) {
 		StringBuffer querySb = new StringBuffer();
 
 		for (String condition : conditions) {
@@ -282,7 +315,7 @@ public class Table{
 
 		String queryStr = querySb.toString();
 
-		return conditions.size() > 0 ? queryStr.substring(0, queryStr.lastIndexOf("and")) : "";
+		return conditions.length > 0 ? queryStr.substring(0, queryStr.lastIndexOf("and")) : "";
 	}
 
 	private String buildParams(Map<String, Object> params) {
@@ -296,6 +329,4 @@ public class Table{
 
 		return params.size() > 0 ? paramsStr.substring(0, paramsStr.lastIndexOf(',')) : "";
 	}
-
-
 }

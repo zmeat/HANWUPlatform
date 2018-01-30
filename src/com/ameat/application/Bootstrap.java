@@ -7,6 +7,8 @@ import com.ameat.dataservice.RiverFlowService;
 import com.ameat.dataservice.TemperatureService;
 import com.ameat.simulation.Simulation;
 import com.ameat.simulation.TimeController;
+import com.ameat.tables.FarmerInit;
+import com.ameat.tables.Table;
 import com.ameat.utils.ConfigurationLoader;
 
 public class Bootstrap {
@@ -29,12 +31,14 @@ public class Bootstrap {
 	
 	// 临时的测试方法写在这里面
 	public static void tempTest() {
-		String filePath = ConfigurationLoader.config("application.excelpath");
-		TemperatureService.importExcelData(filePath);
-		RainService.importExcelData(filePath);
-		RiverFlowService.importExcelData(filePath);
+//		String filePath = ConfigurationLoader.config("application.excelpath");
+//		TemperatureService.importExcelData(filePath);
+//		RainService.importExcelData(filePath);
+//		RiverFlowService.importExcelData(filePath);
 		TemperatureService.exportExcelData();
 		RainService.exportExcelData();
 		RiverFlowService.exportExcelData();
+		
+		FarmerInit.init();
 	}
 }
