@@ -1,6 +1,8 @@
 package com.ameat.dataservice;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -16,11 +18,14 @@ public class TemperatureService {
      * @param data
      */
 	public static void create(String[] data) {
-		Temperature temp = new Temperature();
-		temp.set("county", data[0]);
-		temp.set("date", data[1]);
-		temp.set("degree", data[2]);
-		temp.saveIt();
+		Table table = new Table("Temperature");
+		Map<String, Object> record = new HashMap<String, Object>();
+		
+		record.put("county", data[0]);
+		record.put("date", data[1]);
+		record.put("degree", data[2]);
+		
+		table.save(record);
 		logger.info("insert county:" +data[0]+ "date:" +data[1]+ "degree:" +data[2]);
 	}
 

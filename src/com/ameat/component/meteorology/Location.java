@@ -30,9 +30,17 @@ public abstract class Location {
 	protected double Tmin;
 	protected double Tmax;
 	
-	public abstract double getTmin(DateTime time);
-	public abstract double getTmax(DateTime time);
-	public abstract double getPrecip(DateTime time);
+	public double getTmin(DateTime time) {
+		return 0;
+	}
+
+	public double getTmax(DateTime time) {
+		return 0;
+	}
+
+	public double getPrecip(DateTime time) {
+		return 0;
+	}
 	
 	
 	/**
@@ -100,11 +108,6 @@ public abstract class Location {
 		return getNRa(-angle, -cent, time);
 	}
 	
-	
-//	public static void main(String[] args) {
-//		Evapotraspiration et = new Evapotraspiration(new TimeController());
-//		System.out.println("ETo="+et.getETo("LuanPing"));
-//	}
 }
 
 
@@ -121,24 +124,6 @@ class LuanPing extends Location{
 //		this.cent=44;
 		this.isNorth=true;
 	}
-
-	@Override
-	public double getTmin(DateTime time) {
-		// TODO Auto-generated method stub
-		return 25.6;
-	}
-
-	@Override
-	public double getTmax(DateTime time) {
-		// TODO Auto-generated method stub
-		return 34.8;
-	}
-
-	@Override
-	public double getPrecip(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
 
 class ChiCheng extends Location{
@@ -150,25 +135,6 @@ class ChiCheng extends Location{
 		this.cent = 55.0;
 		this.isNorth = true;
 	}
-
-	@Override
-	public double getTmin(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getTmax(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getPrecip(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 }
 
 class FengNing extends Location{
@@ -181,23 +147,6 @@ class FengNing extends Location{
 		this.isNorth = true;
 	}
 
-	@Override
-	public double getTmin(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getTmax(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getPrecip(DateTime time) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }
 
 

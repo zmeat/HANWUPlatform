@@ -1,6 +1,8 @@
 package com.ameat.dataservice;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -16,11 +18,14 @@ public class RiverFlowService {
      * @param data
      */
 	public static void create(String[] data) {
-		RiverFlow rf = new RiverFlow();
-		rf.set("river_name", data[0]);
-		rf.set("date", data[1]);
-		rf.set("flow", data[2]);
-		rf.saveIt();
+		Table table = new Table("RiverFlow");
+		Map<String, Object> record = new HashMap<String, Object>();
+		
+		record.put("river_name", data[0]);
+		record.put("date", data[1]);
+		record.put("flow", data[2]);
+		
+		table.save(record);
 		logger.info("insert riverName:" +data[0]+ "date:" +data[1]+ "flow:" +data[2]);
 	}
 

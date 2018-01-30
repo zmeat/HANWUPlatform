@@ -17,12 +17,12 @@ import org.json.JSONObject;
 import com.ameat.tables.Table;
 
 public class importNoaaData {
-	private final static String stationPath = "/Users/zmeat/gsod/isd-china.txt";
-	private final static String dataPath = "/Users/zmeat/aa/";
+	private final static String stationPath = "/Users/yanmeng/Downloads/gsod/isd-china.txt";
+	private final static String dataPath = "/Users/yanmeng/Downloads/aa/";
 	private final static DateTimeFormatter format = DateTimeFormat.forPattern("yyyyMMdd");
 
 	public static void main(String[] args) {
-		importStation();
+		//importStation();
 		importMeteorologies();
 	}
 
@@ -138,6 +138,7 @@ public class importNoaaData {
 			String line;
 			while ((line = in.readLine()) != null) {
 				res += line+"\n";
+				
 			}
 			in.close();
 	    } catch (Exception e) {

@@ -17,7 +17,7 @@ public class Bootstrap {
 		
 		try {
 			TimeController timeController = new TimeController();
-			new Simulation(timeController).run();
+			//new Simulation(timeController).run();
 			
 			tempTest();
 		} catch (Exception e) {
@@ -31,14 +31,13 @@ public class Bootstrap {
 	
 	// 临时的测试方法写在这里面
 	public static void tempTest() {
-//		String filePath = ConfigurationLoader.config("application.excelpath");
-//		TemperatureService.importExcelData(filePath);
-//		RainService.importExcelData(filePath);
-//		RiverFlowService.importExcelData(filePath);
+		String filePath = ConfigurationLoader.config("application.excelpath");
+		TemperatureService.importExcelData(filePath);
+		RainService.importExcelData(filePath);
+		RiverFlowService.importExcelData(filePath);
 		TemperatureService.exportExcelData();
 		RainService.exportExcelData();
 		RiverFlowService.exportExcelData();
 		
-		FarmerInit.init();
 	}
 }

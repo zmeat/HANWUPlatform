@@ -77,7 +77,8 @@ public class Farmer {
 	 * @param senes       生成敏感度
 	 * @param waterPermit 根据耕地面积，确定该户农民能提取得水量，单位:立方米 m^3   
 	 */
-	public Farmer(TimeController tc, Map<String, Crop> cropInfos, int simId, int farmerId, String location, int farmerNum, double cropArea, double mu, double learn, double radius, double senes, double waterPermit) {
+	public Farmer(TimeController tc, Map<String, Crop> cropInfos, int simId, int farmerId, String location, int farmerNum, 
+			double cropArea, double mu, double learn, double radius, double senes, double waterPermit) {
 		// 初始化表示参数
 		this.tc =  tc;
 		this.cropInfos = cropInfos;
@@ -120,6 +121,9 @@ public class Farmer {
 		this.riceConsumeWater = this.mmTom3(this.riceArea, this.riceIrrigation);
 		this.maizeConsumeWater = this.mmTom3(this.maizeArea, this.maizeIrrigation);
 		this.consumeWater = this.riceConsumeWater + this.maizeConsumeWater;
+	}
+	
+	protected void recordToFarmerAnchor() {
 		
 	}
 	
@@ -172,6 +176,23 @@ public class Farmer {
 		yearValueToZero();
 	}
 	
+	
+	/**
+	 * 农民根据气象数据更新每天的数据
+	 * @param ET
+	 * @param isWaterLimited
+	 */
+	protected void dayByDay(Evapotranspiration ET, boolean isWaterLimited) {
+		if(isWaterLimited) daysWithWaterStress(ET);
+		else daysWithoutWaterStress(ET);
+	}
+
+	/**
+	 * 将该农民的信息插入到数据库中
+	 */
+	protected void recordToFarmerTrace() {
+		
+	}
 	
 	protected void daysWithWaterStress(Evapotranspiration ET) {
 		double ETo = ET.getETo(this.locationStr);
@@ -246,9 +267,8 @@ public class Farmer {
 /**
  * 没有水分胁迫的情况下，农民每天的策略
  * @param ET
- * @param cropInfos
  */
-	protected void daysWithoutWaterStress(Evapotranspiration ET, Map<String, Crop> cropInfos) {
+	protected void daysWithoutWaterStress(Evapotranspiration ET) {
 		double ETo = ET.getETo(this.locationStr);
 		Location location = ET.getLocation(this.locationStr);
 		
@@ -276,7 +296,6 @@ public class Farmer {
 			this.riceYield += this.cropInfos.get("rice").getYeildMaxOfDay();
 		}
 		
-		
 		// ------------------------------------更新玉米灌溉 、 消耗------------------------------------//
 		// 每天更新   4，5
 		if(this.cropInfos.get("maize").getKc() < 0.0) {
@@ -299,6 +318,9 @@ public class Farmer {
 		}
 		
 	}
+	
+	
+	
 	
 	public double getMu() {
 		return this.currentMu;
