@@ -1,8 +1,11 @@
 package com.ameat.component.meteorology;
 
+import java.util.Map;
+
 import org.joda.time.DateTime;
 
 import com.ameat.simulation.TimeController;
+import com.ameat.tables.Table;
 
 public abstract class Location {
 	protected String chineseName;
@@ -30,16 +33,37 @@ public abstract class Location {
 	protected double Tmin;
 	protected double Tmax;
 	
+	public double getTmean(DateTime time) {
+		Table table = new Table("Meteorology");
+		Map<String, Object> meteorology = table.getOne("id asc", "date="+time.toString("yyyy-MM-dd"));
+		return meteorology.containsKey("avg_temp") ? Double.valueOf(meteorology.get("avg_temp").toString()) : 0.0;
+	}
+	
 	public double getTmin(DateTime time) {
-		return 0;
+		Table stationTable = new Table("Station");
+		Table meteTable = new Table("Meteorology");
+		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		String StationId = station.get("station_id").toString();
+		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
+		return meteorology.containsKey("min_temp") ? Double.valueOf(meteorology.get("min_temp").toString()) : 0.0;
 	}
 
 	public double getTmax(DateTime time) {
-		return 0;
+		Table stationTable = new Table("Station");
+		Table meteTable = new Table("Meteorology");
+		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		String StationId = station.get("station_id").toString();
+		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
+		return meteorology.containsKey("max_temp") ? Double.valueOf(meteorology.get("max_temp").toString()) : 0.0;
 	}
 
 	public double getPrecip(DateTime time) {
-		return 0;
+		Table stationTable = new Table("Station");
+		Table meteTable = new Table("Meteorology");
+		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		String StationId = station.get("station_id").toString();
+		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
+		return meteorology.containsKey("precipition") ? Double.valueOf(meteorology.get("precipition").toString()) : 0.0;
 	}
 	
 	
