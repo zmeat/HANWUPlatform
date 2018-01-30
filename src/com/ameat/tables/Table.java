@@ -263,11 +263,11 @@ public class Table{
 
 	/**
 	 * export the whole data of the table to excel
-	 * @param sheetName
 	 * @param fileName
+	 * @param sheetName
 	 * @param conditions
 	 */
-	public void export(String sheetName, String fileName, String ... conditions) {
+	public void export(String fileName, String sheetName, String ... conditions) {
 		int perpage = Integer.parseInt(ConfigurationLoader.config("application.default_perpage"));
 		int page = Integer.parseInt(ConfigurationLoader.config("application.default_page"));
 		String orderBy = ConfigurationLoader.config("application.default_order_by");
@@ -328,12 +328,5 @@ public class Table{
 		String paramsStr = paramsSb.toString();
 
 		return params.size() > 0 ? paramsStr.substring(0, paramsStr.lastIndexOf(',')) : "";
-	}
-
-
-	public static void main(String[] args) {
-		new Table("Rain").export("shhsh", "fdfdf", "id<500", "id>100");
-		System.out.println(new Table("Rain").getOne("id=10"));
-		System.out.println(new Table("Rain").getOne("id desc"));
 	}
 }
