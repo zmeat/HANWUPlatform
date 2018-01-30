@@ -35,9 +35,9 @@ public class Bootstrap {
 //		TemperatureService.importExcelData(filePath);
 //		RainService.importExcelData(filePath);
 //		RiverFlowService.importExcelData(filePath);
-//		TemperatureService.exportExcelData();
-//		RainService.exportExcelData();
-//		RiverFlowService.exportExcelData();
+		TemperatureService.exportExcelData();
+		RainService.exportExcelData();
+		RiverFlowService.exportExcelData();
 		
 		FarmerInit.init();
 	}

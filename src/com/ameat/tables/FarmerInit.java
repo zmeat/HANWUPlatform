@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.javalite.activejdbc.Model;
 
+import com.ameat.utils.Generator;
+
 public class FarmerInit extends Model {
 
 	public static  void init() {
@@ -27,16 +29,24 @@ public class FarmerInit extends Model {
 			for(int i=1; i<=Integer.valueOf(v); i++) {
 				Map<String, Object> record = new HashMap<String, Object>();
 				Map<String, String> cropAreas = colonToMap(simulation.get("crop_area").toString());
+				Double cv = Double.valueOf(simulation.get("cv").toString());
+				Double mu = Generator.Normal(Double.valueOf(simulation.get("mu").toString()), cv);
+				Double learn = Generator.Normal(Double.valueOf(simulation.get("learn").toString()), cv);
+				Double radius = Generator.Normal(Double.valueOf(simulation.get("radius").toString()), cv);
+				Double sense = Generator.Normal(Double.valueOf(simulation.get("sense").toString()), cv);
+				Double waterPermit = Double.valueOf(simulation.get("water_limit").toString()) == -1
+						? -1: getWaterPermit(simulation, Double.valueOf(cropAreas.get(k)));
+					
 				record.put("sim_id", sim_id);
 				record.put("location", k);
 				record.put("farmer_no", i);
-				record.put("mu", simulation.get("mu"));
-				record.put("learn", simulation.get("learn"));
-				record.put("radius", simulation.get("radius"));
-				record.put("sense", simulation.get("sense"));
+				record.put("mu", mu);
+				record.put("learn", learn);
+				record.put("radius", radius);
+				record.put("sense", sense);
 				record.put("farmer_number", Integer.valueOf(v));
 				record.put("crop_area", cropAreas.get(k));
-				record.put("water_permit", simulation.get("water_limit"));
+				record.put("water_permit", waterPermit);
 				FarmerInit.insertOne(record);
 			}
 		});
@@ -51,6 +61,17 @@ public class FarmerInit extends Model {
 		}
 		
 		return result;
+	}
+	
+	private static double getWaterPermit(Map<String, Object> simulation, double cropAreasPerFarmer) {
+		Map<String, String> cropAreas = colonToMap(simulation.get("crop_area").toString());
+		Map<String, String> farmerNumbers = colonToMap(simulation.get("farmer_number").toString());
+		double areaCounts = 0.0;
+		for(String key : farmerNumbers.keySet()) {
+			areaCounts += Double.valueOf(cropAreas.get(key))*Double.valueOf(farmerNumbers.get(key));
+		}
+		
+		return cropAreasPerFarmer*(Double.valueOf(simulation.get("water_limit").toString())/areaCounts);
 	}
 	
 

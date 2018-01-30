@@ -1,21 +1,5 @@
-0    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.country.CountryImpl@ea30797has been registered !
-4    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.hydrology.HydrologyImpl@726f3b58has been registered !
-5    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.city.CityImpl@ee7d9f1has been registered !
-6    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.meteorology.MeteorologyImpl@1edf1c96has been registered !
-7    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.economic.EconomicImpl@6996db8has been registered !
-338  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@7dc36524
-401  [main] WARN org.javalite.activejdbc.Registry - fetchMetaParams >>  Failed to retrieve metadata for table: 'farmer_anchors'. Are you sure this table exists? For some databases table names are case sensitive.
-572  [main] INFO com.ameat.simulation.Simulation - simulationStart >>  simulation start, components are initialized !
-580  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-14T00:00:00.000+08:00 ->
-580  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-15T00:00:00.000+08:00 ->
-580  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-16T00:00:00.000+08:00 ->
-580  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-17T00:00:00.000+08:00 ->
-580  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-18T00:00:00.000+08:00 ->
-581  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-19T00:00:00.000+08:00 ->
-581  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-20T00:00:00.000+08:00 ->
-581  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-21T00:00:00.000+08:00 ->
-581  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-22T00:00:00.000+08:00 ->
-581  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-23T00:00:00.000+08:00 ->
-582  [main] INFO com.ameat.simulation.Simulation - run >>  2012-04-24T00:00:00.000+08:00 ->
-582  [main] INFO com.ameat.component.country.CountryImpl - finished >>  CountryImpl finished 
-582  [main] INFO com.ameat.simulation.Simulation - simulationEnd >>  simulation end, components finished !
+0    [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@1055e4af
+54   [main] WARN org.javalite.activejdbc.Registry - fetchMetaParams >>  Failed to retrieve metadata for table: 'farmer_anchors'. Are you sure this table exists? For some databases table names are case sensitive.
+152  [main] WARN org.javalite.activejdbc.Configuration - getEnv >>  Environment variable ACTIVE_ENV not provided, defaulting to 'development'
+160  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@73035e27
+1408 [main] INFO com.ameat.utils.Jexcel - writeToFile >>  write file :resource/export/fdfdf.xlsx finish!
