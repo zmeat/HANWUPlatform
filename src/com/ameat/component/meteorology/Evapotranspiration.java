@@ -36,7 +36,7 @@ public class Evapotranspiration {
 		// 从数据库中获取最小温度和最大温度
 		double Tmin = location.getTmin(this.tc.getCurrentTime());
 		double Tmax = location.getTmax(this.tc.getCurrentTime());
-		double Tmean = (Tmin + Tmax) / 2;
+		double Tmean = location.getTmean(this.tc.getCurrentTime());
 		double delta = getDeltaByT(Tmean); 
 		// 从海拔高度获得gamma
 		double gamma = location.getGamma();

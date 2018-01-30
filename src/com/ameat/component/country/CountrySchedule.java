@@ -42,9 +42,9 @@ public class CountrySchedule{
 			List<Farmer> farmers = this.farmers.get(location);
 			for(Farmer farmer : farmers) {
 				// 更新数据
-				farmer.dayByDay(ET, this.isWaterLimited);
+				farmer.dayByDay(this.ET, this.isWaterLimited);
 				// 插入数据库
-				farmer.recordToFarmerTrace();
+				farmer.recordToFarmerTrace(this.ET);
 			}
 		}
 		

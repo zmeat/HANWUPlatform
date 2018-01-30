@@ -34,8 +34,11 @@ public abstract class Location {
 	protected double Tmax;
 	
 	public double getTmean(DateTime time) {
-		Table table = new Table("Meteorology");
-		Map<String, Object> meteorology = table.getOne("id asc", "date="+time.toString("yyyy-MM-dd"));
+		Table stationTable = new Table("Station");
+		Table meteTable = new Table("Meteorology");
+		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		String StationId = station.get("station_id").toString();
+		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
 		return meteorology.containsKey("avg_temp") ? Double.valueOf(meteorology.get("avg_temp").toString()) : 0.0;
 	}
 	
