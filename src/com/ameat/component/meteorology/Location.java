@@ -36,7 +36,7 @@ public abstract class Location {
 	public double getTmean(DateTime time) {
 		Table stationTable = new Table("Station");
 		Table meteTable = new Table("Meteorology");
-		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		Map<String, Object> station = stationTable.getOne("id asc", "district= '"+this.chineseName+"'");
 		String StationId = station.get("station_id").toString();
 		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
 		return meteorology.containsKey("avg_temp") ? Double.valueOf(meteorology.get("avg_temp").toString()) : 0.0;
@@ -45,7 +45,7 @@ public abstract class Location {
 	public double getTmin(DateTime time) {
 		Table stationTable = new Table("Station");
 		Table meteTable = new Table("Meteorology");
-		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		Map<String, Object> station = stationTable.getOne("id asc", "district= '"+this.chineseName+"'");
 		String StationId = station.get("station_id").toString();
 		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
 		return meteorology.containsKey("min_temp") ? Double.valueOf(meteorology.get("min_temp").toString()) : 0.0;
@@ -54,7 +54,7 @@ public abstract class Location {
 	public double getTmax(DateTime time) {
 		Table stationTable = new Table("Station");
 		Table meteTable = new Table("Meteorology");
-		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		Map<String, Object> station = stationTable.getOne("id asc", "district= '"+this.chineseName+"'");
 		String StationId = station.get("station_id").toString();
 		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
 		return meteorology.containsKey("max_temp") ? Double.valueOf(meteorology.get("max_temp").toString()) : 0.0;
@@ -63,7 +63,7 @@ public abstract class Location {
 	public double getPrecip(DateTime time) {
 		Table stationTable = new Table("Station");
 		Table meteTable = new Table("Meteorology");
-		Map<String, Object> station = stationTable.getOne("id asc", "district="+this.chineseName);
+		Map<String, Object> station = stationTable.getOne("id asc", "district= '"+this.chineseName+"'");
 		String StationId = station.get("station_id").toString();
 		Map<String, Object> meteorology = meteTable.getOne("id asc", "date="+time.toString("yyyy-MM-dd"), "station_id="+StationId);
 		return meteorology.containsKey("precipition") ? Double.valueOf(meteorology.get("precipition").toString()) : 0.0;

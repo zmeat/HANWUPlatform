@@ -20,6 +20,9 @@ public class Farmer {
 	private TimeController tc;
 	private Map<String, Crop> cropInfos;
 	
+	private Table farmerTraceTable;
+	private Map<String, Object> record = new HashMap<String, Object>();
+	
 	// 一次定型
 	private String locationStr;
 	private int simId;
@@ -81,6 +84,9 @@ public class Farmer {
 	 */
 	public Farmer(TimeController tc, Map<String, Crop> cropInfos, int simId, int farmerId, String location, int farmerNum, 
 			double cropArea, double mu, double learn, double radius, double senes, double waterPermit) {
+		
+		this.farmerTraceTable = new Table("FarmerTrace");
+		
 		// 初始化表示参数
 		this.tc =  tc;
 		this.cropInfos = cropInfos;
@@ -216,13 +222,12 @@ public class Farmer {
 	 * 将该农民的信息插入到数据库中
 	 */
 	protected void recordToFarmerTrace(Evapotranspiration ET) {
-		Table table = new Table("FarmerTrace");
-		Map<String, Object> record = new HashMap<String, Object>();
+//		Map<String, Object> record = new HashMap<String, Object>();
 		
 		double ETo = ET.getETo(this.locationStr);
 		Location location = ET.getLocation(this.locationStr);
 		
-		record.put("time", this.tc.getCurrentTime());
+		record.put("time", this.tc.getCurrentTime().toString("yyyy-MM-dd"));
 		record.put("remaining_water", this.waterRemaining);
 		record.put("precip", this.precip);
 		record.put("eto", ETo);
@@ -247,7 +252,7 @@ public class Farmer {
 		record.put("dr_maize", this.maizeDr);
 		record.put("yield_maize", this.maizeYield);
 		
-		table.insertOne(record);
+		this.farmerTraceTable.insertOne(record);
 	}
 	
 	protected void daysWithWaterStress(Evapotranspiration ET) {
