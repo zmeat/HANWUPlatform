@@ -10,6 +10,7 @@ public interface CompInterface extends ComunicationInterface{
 	public void init(TimeController timeController, Map<String, ComunicationInterface> comunications);
 	
 	public void compute();
+	
 	public void anchorCompute();
 	
 	public void finished();

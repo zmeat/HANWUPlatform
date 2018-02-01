@@ -55,7 +55,7 @@ public class CountrySchedule{
 		double cropIrrigation=0;
 		double riceIrrigation=0;
 		double maizeIrrigation=0;
-		double corpIncome=0;
+		double cropIncome=0;
 		double riceIncome=0;
 		double maizeIncome=0;
 		
@@ -75,7 +75,7 @@ public class CountrySchedule{
 				riceIrrigation += farmer.getRiceCousumeWater();
 				cropIrrigation += farmer.getCousumeWater();
 				maizeIrrigation += farmer.getMaizeConsumeWater();
-				corpIncome += farmer.getCropIncome();
+				cropIncome += farmer.getCropIncome();
 				riceIncome += farmer.getRiceIncome();
 				maizeIncome += farmer.getMaizeIncome();
 				
@@ -95,7 +95,7 @@ public class CountrySchedule{
 		record.put("crop_irrigation", cropIrrigation);
 		record.put("rice_irrigation", riceIrrigation);
 		record.put("maize_irrigation", maizeIrrigation);
-		record.put("corp_income", corpIncome);
+		record.put("crop_income", cropIncome);
 		record.put("rice_income", riceIncome);
 		record.put("maize_income", maizeIncome);
 		

@@ -103,7 +103,7 @@ public class Farmer {
 		this.waterLimit = waterPermit;
 		// 初始化每年的调整参数
 		this.maizeArea = mu*cropArea;
-		this.cropArea = cropArea - this.maizeArea;
+		this.riceArea = this.cropArea - this.maizeArea;
 		
 		// 限制用水
 		this.daysWater = waterPermit / 
