@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS `farmer_traces`;
 
 CREATE TABLE `farmer_traces` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '农民序号',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自动ID',
+  `farmer_id` int(11) unsigned NOT NULL COMMENT '农民序号',
   `time` datetime DEFAULT NULL COMMENT '模拟时间',
   `remaining_water` double(8, 2) DEFAULT NULL COMMENT '可用水量(m^3)',
   `precip` double(8, 2) DEFAULT NULL COMMENT '降雨量(mm)',

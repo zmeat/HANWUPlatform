@@ -16,12 +16,10 @@ public class CountryImpl implements CompInterface{
 	private Logger logger = Logger.getLogger(this.getClass());
 	private TimeController tc;
 	private CountrySchedule countrySchedule;
-	private Map<String, ComunicationInterface> comunications;
 
 	@Override
 	public void init(TimeController timeController, Map<String, ComunicationInterface> comunications) {
 		this.tc = timeController;
-		this.comunications = comunications;
 		this.generateFarmerInfos();
 		this.countrySchedule = new CountrySchedule(timeController, comunications);
 		logger.info("Init time : "+this.tc.getCurrentTime() + "component = Country is inited !");
@@ -106,7 +104,6 @@ public class CountryImpl implements CompInterface{
 		for(String key : farmerNumbers.keySet()) {
 			areaCounts += Double.valueOf(cropAreas.get(key))*Double.valueOf(farmerNumbers.get(key));
 		}
-		
 		return cropAreasPerFarmer*(Double.valueOf(simulation.get("water_limit").toString())/areaCounts);
 	}
 

@@ -42,7 +42,7 @@ public class TimeController {
 	}
 	
 	public void nextYearSart() {
-		while(!this.startTime.isAfter(this.currentTime)) this.startTime.plusYears(1);
+		while(this.startTime.getYear() <= this.currentTime.getYear()) this.startTime = this.startTime.plusYears(1);
 		this.currentTime = this.startTime;
 	}
 	
@@ -50,7 +50,8 @@ public class TimeController {
 	 * @return DateTime : AnchorTime plus a Year. Generally the anchor time should plus T(a cycle)
 	 */
 	public DateTime nextAnchorTime() {
-		return this.anchorTime.plusYears(1);
+		this.anchorTime = this.anchorTime.plusYears(1);
+		return this.anchorTime;
 	}
 	
 	public DateTime getEndTime() {

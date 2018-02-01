@@ -1,6 +1,8 @@
 package com.ameat.component.meteorology;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -12,18 +14,36 @@ public class MeteorologySchedule {
 	private Logger logger = Logger.getLogger(this.getClass());
 	private Map<String, ComunicationInterface> connections;
 	private TimeController timeSchedule;
-	private Evapotranspiration ET;
+	
+	private Map<String, Location> locationInfos;
 
+	
 	public MeteorologySchedule(TimeController timeController, Map<String, ComunicationInterface> comunications) {
+		
 		this.connections = comunications;
 		this.timeSchedule = timeController;
-		this.ET = new Evapotranspiration(timeController);
+		
+		this.locationInfos = new HashMap<String, Location>();
+		
+		this.locationInfos.put("LuanPing", new LuanPing(timeController));
+		this.locationInfos.put("ChiCheng", new ChiCheng(timeController));
+		this.locationInfos.put("FengNing", new FengNing(timeController));
+		
 	}
 	
 	
 	protected void loadToCompute() {
 		
+		Set<String> locations = locationInfos.keySet();
+		for(String location : locations) {
+			locationInfos.get(location).loadMeteInfo();
+		}
 		
+		
+	}
+	
+	protected Location locatedToComunicate(String locationStr) {
+		return locationInfos.get(locationStr);
 	}
 	
 	
@@ -40,10 +60,5 @@ public class MeteorologySchedule {
 		
 	}
 	
-	
-	
-	public Evapotranspiration getET() {
-		return this.ET;
-	}
 	
 }

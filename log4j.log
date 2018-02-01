@@ -1,10 +1,129 @@
-0    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.country.CountryImpl@ea30797has been registered !
-5    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.hydrology.HydrologyImpl@726f3b58has been registered !
-7    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.city.CityImpl@ee7d9f1has been registered !
-10   [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.meteorology.MeteorologyImpl@1edf1c96has been registered !
-12   [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.economic.EconomicImpl@6996db8has been registered !
-388  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@7dc36524
-643  [main] INFO com.ameat.component.meteorology.MeteorologyImpl - init >>  Init time : 2006-04-20T00:00:00.000+08:00component = Meteorology is inited !
-720  [main] INFO com.ameat.component.country.CountryImpl - init >>  Init time : 2006-04-20T00:00:00.000+08:00component = Country is inited !
-720  [main] INFO com.ameat.simulation.Simulation - simulationStart >>  simulation start, components are initialized !
-723  [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-20T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:42,246 0    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.country.CountryImpl@6f2b958ehas been registered !
+2018/02/01 15:57:42,254 8    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.hydrology.HydrologyImpl@379619aahas been registered !
+2018/02/01 15:57:42,255 9    [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.city.CityImpl@5e265ba4has been registered !
+2018/02/01 15:57:42,257 11   [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.meteorology.MeteorologyImpl@123a439bhas been registered !
+2018/02/01 15:57:42,258 12   [main] INFO com.ameat.simulation.Simulation - register >>  com.ameat.component.economic.EconomicImpl@1175e2dbhas been registered !
+2018/02/01 15:57:42,725 479  [main] INFO org.javalite.activejdbc.DB - open >>  Opened connection: com.mysql.jdbc.JDBC4Connection@6bdf28bb
+2018/02/01 15:57:43,156 910  [main] INFO com.ameat.component.meteorology.MeteorologyImpl - init >>  Init time : 2006-04-20T00:00:00.000+08:00component = Meteorology is inited !
+2018/02/01 15:57:43,351 1105 [main] INFO com.ameat.component.country.CountryImpl - init >>  Init time : 2006-04-20T00:00:00.000+08:00component = Country is inited !
+2018/02/01 15:57:43,352 1106 [main] INFO com.ameat.simulation.Simulation - simulationStart >>  simulation start, components are initialized !
+2018/02/01 15:57:44,588 2342 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-20T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:44,705 2459 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-20T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:45,964 3718 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-21T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:46,075 3829 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-21T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:47,245 4999 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-22T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:47,337 5091 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-22T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:48,683 6437 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-23T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:48,776 6530 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-23T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:49,969 7723 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-24T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:50,056 7810 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-24T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:51,221 8975 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-25T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:51,324 9078 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-25T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:52,656 10410 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-26T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:52,719 10473 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-26T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:53,904 11658 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-27T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:53,957 11711 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-27T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:55,368 13122 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-28T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:55,446 13200 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-28T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:56,659 14413 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-29T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:56,710 14464 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-29T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:58,297 16051 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-04-30T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:58,340 16094 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-04-30T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:57:59,519 17273 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-01T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:57:59,563 17317 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-01T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:00,796 18550 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-02T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:00,844 18598 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-02T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:02,094 19848 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-03T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:02,167 19921 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-03T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:03,362 21116 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-04T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:03,441 21195 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-04T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:04,647 22401 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-05T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:04,695 22449 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-05T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:05,834 23588 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-06T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:05,879 23633 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-06T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:07,038 24792 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-07T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:07,083 24837 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-07T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:08,234 25988 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-08T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:08,276 26030 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-08T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:09,423 27177 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-09T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:09,466 27220 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-09T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:10,651 28405 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-10T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:10,695 28449 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-10T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:11,944 29698 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-11T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:11,994 29748 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-11T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:13,187 30941 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-12T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:13,230 30984 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-12T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:14,394 32148 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-13T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:14,436 32190 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-13T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:15,593 33347 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-14T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:15,635 33389 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-14T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:16,822 34576 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-15T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:16,866 34620 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-15T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:18,015 35769 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-16T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:18,082 35836 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-16T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:19,264 37018 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-17T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:19,306 37060 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-17T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:20,475 38229 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-18T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:20,520 38274 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-18T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:21,702 39456 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-19T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:21,779 39533 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-19T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:23,051 40805 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-20T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:23,092 40846 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-20T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:24,241 41995 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-21T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:24,287 42041 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-21T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:25,461 43215 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-22T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:25,506 43260 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-22T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:26,645 44399 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-23T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:26,687 44441 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-23T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:27,851 45605 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-24T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:27,893 45647 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-24T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:29,065 46819 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-25T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:29,106 46860 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-25T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:30,272 48026 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-26T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:30,314 48068 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-26T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:31,549 49303 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-27T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:31,590 49344 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-27T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:32,742 50496 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-28T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:32,784 50538 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-28T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:33,957 51711 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-29T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:33,997 51751 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-29T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:35,158 52912 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-30T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:35,196 52950 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-30T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:36,327 54081 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-05-31T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:36,371 54125 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-05-31T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:37,502 55256 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-01T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:37,540 55294 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-01T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:38,663 56417 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-02T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:38,710 56464 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-02T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:39,842 57596 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-03T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:39,901 57655 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-03T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:41,097 58851 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-04T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:41,141 58895 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-04T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:42,295 60049 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-05T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:42,347 60101 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-05T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:43,645 61399 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-06T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:43,684 61438 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-06T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:44,814 62568 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-07T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:44,860 62614 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-07T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:46,040 63794 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-08T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:46,082 63836 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-08T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:47,205 64959 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-09T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:47,248 65002 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-09T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:48,370 66124 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-10T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:48,412 66166 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-10T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:49,575 67329 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-11T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:49,611 67365 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-11T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:50,734 68488 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-12T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:50,770 68524 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-12T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:51,911 69665 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-13T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:51,960 69714 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-13T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:53,177 70931 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-14T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:53,219 70973 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-14T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:54,350 72104 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-15T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:54,384 72138 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-15T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:55,544 73298 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-16T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:55,577 73331 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-16T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:56,705 74459 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-17T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:56,737 74491 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-17T00:00:00.000+08:00component = Country is computed !
+2018/02/01 15:58:57,858 75612 [main] INFO com.ameat.component.meteorology.MeteorologyImpl - compute >>   Time : 2006-06-18T00:00:00.000+08:00component = Meteorology is computed !
+2018/02/01 15:58:57,894 75648 [main] INFO com.ameat.component.country.CountryImpl - compute >>   Time : 2006-06-18T00:00:00.000+08:00component = Country is computed !

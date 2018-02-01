@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-
-import com.ameat.component.meteorology.Evapotranspiration;
 import com.ameat.component.meteorology.Location;
 import com.ameat.simulation.TimeController;
 import com.ameat.tables.Table;
@@ -17,10 +14,11 @@ import com.ameat.utils.Generator;
  *
  */
 public class Farmer {
+	private int farmer_id;
 	private TimeController tc;
 	private Map<String, Crop> cropInfos;
 	
-	private Table farmerTraceTable;
+	private Table farmerTraceTable = new Table("FarmerTrace");
 	private Map<String, Object> record = new HashMap<String, Object>();
 	
 	// 一次定型
@@ -82,16 +80,15 @@ public class Farmer {
 	 * @param senes       生成敏感度
 	 * @param waterPermit 根据耕地面积，确定该户农民能提取得水量，单位:立方米 m^3   
 	 */
-	public Farmer(TimeController tc, Map<String, Crop> cropInfos, int simId, int farmerId, String location, int farmerNum, 
+	public Farmer(int farmer_id, TimeController tc, Map<String, Crop> cropInfos, int simId, int farmerId, String location, int farmerNum, 
 			double cropArea, double mu, double learn, double radius, double senes, double waterPermit) {
-		
-		this.farmerTraceTable = new Table("FarmerTrace");
 		
 		// 初始化表示参数
 		this.tc =  tc;
 		this.cropInfos = cropInfos;
 		
 		this.simId = simId;
+		this.farmer_id = farmer_id;
 		this.farmerNo = farmerId;
 		this.locationStr = location;
 		this.currentMu = mu;
@@ -136,7 +133,8 @@ public class Farmer {
 		Table table = new Table("FarmerAnchor");
 		Map<String, Object> record = new HashMap<String, Object>();
 		
-		record.put("time", this.tc.getCurrentTime());
+		record.put("time", this.tc.getCurrentTime().toString("yyyy-MM-dd"));
+		record.put("farmer_id", this.farmer_id);
 		record.put("previous_mu", this.previousMu);
 		record.put("current_mu", this.currentMu);
 		record.put("precipitation", this.precipitation);
@@ -213,55 +211,55 @@ public class Farmer {
 	 * @param ET
 	 * @param isWaterLimited
 	 */
-	protected void dayByDay(Evapotranspiration ET, boolean isWaterLimited) {
-		if(isWaterLimited) daysWithWaterStress(ET);
-		else daysWithoutWaterStress(ET);
+	protected void dayByDay(Location meteInfo, boolean isWaterLimited) {
+		if(isWaterLimited) daysWithWaterStress(meteInfo);
+		else daysWithoutWaterStress(meteInfo);
 	}
 
 	/**
 	 * 将该农民的信息插入到数据库中
 	 */
-	protected void recordToFarmerTrace(Evapotranspiration ET) {
+	protected void recordToFarmerTrace(Location meteInfo) {
 //		Map<String, Object> record = new HashMap<String, Object>();
 		
-		double ETo = ET.getETo(this.locationStr);
-		Location location = ET.getLocation(this.locationStr);
-		
+		double ETo = meteInfo.getETo();
+		record.put("farmer_id", this.farmer_id);
 		record.put("time", this.tc.getCurrentTime().toString("yyyy-MM-dd"));
 		record.put("remaining_water", this.waterRemaining);
 		record.put("precip", this.precip);
 		record.put("eto", ETo);
 		
 		record.put("zr_rice", this.cropInfos.get("rice").getZr());
-		record.put("raw_rice", this.cropInfos.get("rice").getRAW(location, ETo));
+		record.put("raw_rice", this.cropInfos.get("rice").getRAW(meteInfo, ETo));
 		record.put("irri_rice", this.riceIrri);
 		record.put("kc_rice", this.cropInfos.get("rice").getKc());
 		record.put("etc_rice", this.cropInfos.get("rice").getKc()*ETo);
-		record.put("ks_rice", this.cropInfos.get("rice").getKs(location, ETo, this.riceDr));
-		record.put("etcadj_rice", ETo*this.cropInfos.get("rice").getKc()*this.cropInfos.get("rice").getKs(location, ETo, this.riceDr));
+		record.put("ks_rice", this.cropInfos.get("rice").getKs(meteInfo, ETo, this.riceDr));
+		record.put("etcadj_rice", ETo*this.cropInfos.get("rice").getKc()*this.cropInfos.get("rice").getKs(meteInfo, ETo, this.riceDr));
 		record.put("dr_rice", this.riceDr);
 		record.put("yield_rice", this.riceYield);
 		
 		record.put("zr_maize", this.cropInfos.get("maize").getZr());
-		record.put("raw_maize", this.cropInfos.get("maize").getRAW(location, ETo));
+		record.put("raw_maize", this.cropInfos.get("maize").getRAW(meteInfo, ETo));
 		record.put("irri_maize", this.maizeIrri);
 		record.put("kc_maize", this.cropInfos.get("maize").getKc());
 		record.put("etc_maize", this.cropInfos.get("maize").getKc()*ETo);
-		record.put("ks_maize", this.cropInfos.get("maize").getKs(location, ETo, this.maizeDr));
-		record.put("etcadj_maize", ETo*this.cropInfos.get("maize").getKc()*this.cropInfos.get("maize").getKs(location, ETo, this.maizeDr));
+		record.put("ks_maize", this.cropInfos.get("maize").getKs(meteInfo, ETo, this.maizeDr));
+		record.put("etcadj_maize", ETo*this.cropInfos.get("maize").getKc()*this.cropInfos.get("maize").getKs(meteInfo, ETo, this.maizeDr));
 		record.put("dr_maize", this.maizeDr);
 		record.put("yield_maize", this.maizeYield);
 		
 		this.farmerTraceTable.insertOne(record);
 	}
 	
-	protected void daysWithWaterStress(Evapotranspiration ET) {
-		double ETo = ET.getETo(this.locationStr);
-		Location location = ET.getLocation(this.locationStr);
+	protected void daysWithWaterStress(Location meteInfo) {
+		//每天更新
+		double ETo = meteInfo.getETo();
 		this.waterRemaining += this.daysWater;
 		
 		// 每天更新      1
-		this.precip = location.getPrecip(tc.getCurrentTime());
+		this.precip = meteInfo.getPrecip();
+		
 		// 每天累加      1
 		this.precipitation += this.precip;
 		// ------------------------------------更新水稻灌溉 、 消耗------------------------------------//
@@ -270,7 +268,7 @@ public class Farmer {
 			this.riceIrri = 0.0;
 			this.riceDr = 0.0;
 		}else {
-			if(this.riceDr < this.cropInfos.get("rice").getRAW(location, ETo)) {
+			if(this.riceDr < this.cropInfos.get("rice").getRAW(meteInfo, ETo)) {
 				this.riceIrri = 0.0;
 			} else {
 				this.riceIrri = this.riceDr - this.precip;
@@ -286,12 +284,12 @@ public class Farmer {
 					this.waterRemaining = 0.0;
 				}
 			}
-			this.riceDr = this.riceDr - this.precip - this.riceIrri + this.cropInfos.get("rice").getETcadj(location, ETo, this.riceDr);
+			this.riceDr = this.riceDr - this.precip - this.riceIrri + this.cropInfos.get("rice").getETcadj(meteInfo, ETo, this.riceDr);
 			if(this.riceDr < 0.0) this.riceDr = 0.0;
 			// 每天累加 2,3,4
 			this.ricePrecipitation += this.precip;
 			this.riceIrrigation += this.riceIrri;
-			this.riceYield += this.cropInfos.get("rice").getYieldActually(location, ETo, this.riceDr);
+			this.riceYield += this.cropInfos.get("rice").getYieldActually(meteInfo, ETo, this.riceDr);
 		}
 		
 		// ------------------------------------更新玉米灌溉 、 消耗------------------------------------//
@@ -299,7 +297,7 @@ public class Farmer {
 			this.maizeIrri = 0.0;
 			this.maizeDr = 0.0;
 		}else {
-			if(this.maizeDr < this.cropInfos.get("maize").getRAW(location, ETo)) {
+			if(this.maizeDr < this.cropInfos.get("maize").getRAW(meteInfo, ETo)) {
 				this.maizeIrri = 0.0;
 			} else {
 				this.maizeIrri = this.maizeDr - this.precip;
@@ -315,12 +313,12 @@ public class Farmer {
 					this.waterRemaining = 0.0;
 				}
 			}
-			this.maizeDr = this.maizeDr - this.precip - this.maizeIrri + this.cropInfos.get("maize").getETcadj(location, ETo, this.maizeDr);
+			this.maizeDr = this.maizeDr - this.precip - this.maizeIrri + this.cropInfos.get("maize").getETcadj(meteInfo, ETo, this.maizeDr);
 			if(this.maizeDr < 0.0) this.maizeDr = 0.0;
 			
 			this.maizePrecipitation += this.precip;
 			this.maizeIrrigation += this.maizeIrri;
-			this.maizeYield += this.cropInfos.get("maize").getYieldActually(location, ETo, this.maizeDr);
+			this.maizeYield += this.cropInfos.get("maize").getYieldActually(meteInfo, ETo, this.maizeDr);
 		}
 		
 	}
@@ -329,21 +327,21 @@ public class Farmer {
  * 没有水分胁迫的情况下，农民每天的策略
  * @param ET
  */
-	protected void daysWithoutWaterStress(Evapotranspiration ET) {
-		double ETo = ET.getETo(this.locationStr);
-		Location location = ET.getLocation(this.locationStr);
+	protected void daysWithoutWaterStress(Location meteInfo) {
 		
+		double ETo = meteInfo.getETo();
 		// 每天更新      1
-		this.precip = location.getPrecip(tc.getCurrentTime());
+		this.precip = meteInfo.getPrecip();
 		// 每天累加      1
 		this.precipitation += this.precip;
 		// ------------------------------------更新水稻灌溉 、 消耗------------------------------------//
 		// 每天更新      2，3
+		
 		if(this.cropInfos.get("rice").getKc() < 0.0) {
 			this.riceIrri = 0.0;
 			this.riceDr = 0.0;
 		}else {
-			if(this.riceDr < this.cropInfos.get("rice").getRAW(location, ETo)) {
+			if(this.riceDr < this.cropInfos.get("rice").getRAW(meteInfo, ETo)) {
 				this.riceIrri = 0.0;
 			} else {
 				this.riceIrri = this.riceDr - this.precip;
@@ -356,14 +354,13 @@ public class Farmer {
 			this.riceIrrigation += this.riceIrri;
 			this.riceYield += this.cropInfos.get("rice").getYeildMaxOfDay();
 		}
-		
 		// ------------------------------------更新玉米灌溉 、 消耗------------------------------------//
 		// 每天更新   4，5
 		if(this.cropInfos.get("maize").getKc() < 0.0) {
 			this.maizeIrri = 0.0;
 			this.maizeDr = 0.0;
 		}else {
-			if(this.maizeDr < this.cropInfos.get("maize").getRAW(location, ETo)) {
+			if(this.maizeDr < this.cropInfos.get("maize").getRAW(meteInfo, ETo)) {
 				this.maizeIrri = 0.0;
 			}else {
 				this.maizeIrri = this.maizeDr - this.precip;
@@ -377,7 +374,7 @@ public class Farmer {
 			this.maizeIrrigation += this.maizeIrri;
 			this.maizeYield += this.cropInfos.get("maize").getYeildMaxOfDay();
 		}
-		
+	
 	}
 	
 	
@@ -388,9 +385,6 @@ public class Farmer {
 	}
 	protected double getCropArea() {
 		return this.cropArea;
-	}
-	protected double getCropIncome() {
-		return this.cropIncome;
 	}
 	
 	private void yearValueToZero() {
@@ -473,5 +467,36 @@ public class Farmer {
 	private double mmTom3(double area, double mm) {
 		return (mm/1000)*area*666.6666667;
 	}
+	
+	
+	/**
+	 * 作物总输入
+	 * @return 总收入 ： yuan
+	 */
+	protected double getCropIncome() {
+		return this.cropIncome;
+	}
+	protected double getRiceIncome() {
+		return this.riceIncome;
+	}
+	protected double getMaizeIncome() {
+		return this.maizeIncome;
+	}
+	protected double getMaizeConsumeWater() {
+		return this.maizeConsumeWater;
+	}
+	protected double getRiceCousumeWater() {
+		return this.riceConsumeWater;
+	}
+	protected double getCousumeWater() {
+		return this.consumeWater;
+	}
+	protected double getPrecipitation() {
+		return this.precipitation;
+	}
+	protected int getSimId() {
+		return this.simId;
+	}
+	
 	
 }

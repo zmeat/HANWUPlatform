@@ -47,9 +47,11 @@ public class MeteorologyImpl implements CompInterface, MeteorologyToCountry{
 		logger.info("Deadline : "+this.tc.getCurrentTime() + "component = Meteorology is finished !");
 	}
 
+	
+	
 	@Override
-	public Evapotranspiration getET() {
-		return this.meteorologySchedule.getET();
+	public Location getMeteInfo(String locationStr) {
+		return this.meteorologySchedule.locatedToComunicate(locationStr);
 	}
 
 
