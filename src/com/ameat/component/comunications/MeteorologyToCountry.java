@@ -1,7 +1,7 @@
 package com.ameat.component.comunications;
 
-import com.ameat.component.meteorology.Evapotranspiration;
+import com.ameat.component.meteorology.Location;
 
 public interface MeteorologyToCountry extends ComunicationInterface{
-	public Evapotranspiration getET();
+	public Location getMeteInfo(String locationStr);
 }

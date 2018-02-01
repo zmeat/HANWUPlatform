@@ -42,17 +42,25 @@ public class Simulation {
 		 
 		// simulation cycle
 		while( this.timeController.getCurrentTime().isBefore(this.timeController.getEndTime()) ) {
+			
 			for(Integer i : this.sequence) {
 				CompInterface component = this.components.get(i+"");
-				if(this.timeController.getAnchorTime().isBefore(this.timeController.getCurrentTime())) {
-					component.anchorCompute();
-					this.timeController.nextAnchorTime();
-					this.timeController.nextYearSart();
-				}
 				component.compute();
 			}
-			logger.info(this.timeController.getCurrentTime()+" ->");
+			
+			if(this.timeController.getAnchorTime().isEqual(this.timeController.getCurrentTime())) {
+				for(Integer i : this.sequence) {
+					CompInterface component = this.components.get(i+"");
+					component.anchorCompute();
+				}
+				this.timeController.nextAnchorTime();
+				this.timeController.nextYearSart();
+				logger.info(this.timeController.getCurrentTime()+"  computions starting !");
+				continue;
+			}
 			this.timeController.nextStepTime();
+			
+			
 		}
 		
 		// simulation end, components finished

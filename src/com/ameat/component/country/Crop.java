@@ -129,7 +129,7 @@ public abstract class Crop {
 	 * @return
 	 */
 	protected DateTime getHarvestTime() {
-		while(this.harvestTime.getYear() < this.tc.getCurrentTime().getYear()) this.harvestTime.plusYears(1);
+		while(this.harvestTime.getYear() < this.tc.getCurrentTime().getYear()) this.harvestTime = this.harvestTime.plusYears(1);
 		return this.harvestTime;
 	}
 	/**
@@ -138,7 +138,7 @@ public abstract class Crop {
 	 * @return
 	 */
 	protected DateTime getSowingTime() {
-		while(this.sowingTime.getYear() < this.tc.getCurrentTime().getYear()) this.sowingTime.plusYears(1);
+		while(this.sowingTime.getYear() < this.tc.getCurrentTime().getYear()) this.sowingTime = this.sowingTime.plusYears(1);
 		return this.sowingTime;
 	}
 	
