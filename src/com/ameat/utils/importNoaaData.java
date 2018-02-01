@@ -22,8 +22,8 @@ public class importNoaaData {
 	private final static DateTimeFormatter format = DateTimeFormat.forPattern("yyyyMMdd");
 
 	public static void main(String[] args) {
-		//importStation();
-		importMeteorologies();
+		importStation();
+//		importMeteorologies();
 	}
 
 	public static void importMeteorologies() {
@@ -39,7 +39,7 @@ public class importNoaaData {
 			    }
 
 				for(int i=0; i<stationids.size(); i++) {
-					for (int year = 1990; year<=2018; year++) {
+					for (int year = 2005; year<=2018; year++) {
 						File file = new File(dataPath+stationids.get(i)+"-"+wbanids.get(i)+"-"+year+".op");
 						if(!file.exists()) {
 							continue;

@@ -1,8 +1,7 @@
 DROP TABLE IF EXISTS `farmer_traces`;
 
 CREATE TABLE `farmer_traces` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `farmer_id` int(11) unsigned DEFAULT NULL COMMENT '农民序号',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '农民序号',
   `time` datetime DEFAULT NULL COMMENT '模拟时间',
   `remaining_water` double(8, 2) DEFAULT NULL COMMENT '可用水量(m^3)',
   `precip` double(8, 2) DEFAULT NULL COMMENT '降雨量(mm)',
@@ -20,7 +19,7 @@ CREATE TABLE `farmer_traces` (
   `raw_maize` double(8, 2) DEFAULT NULL COMMENT '玉米易被吸收的有效水量(mm)',
   `irri_maize` double(8, 2) DEFAULT NULL COMMENT '玉米灌溉量(mm)',
   `kc_maize` double(8, 2) DEFAULT NULL COMMENT '玉米的作物系数',
-  `etc_maizie` double(8, 2) DEFAULT NULL COMMENT '玉米腾发量(mm)',
+  `etc_maize` double(8, 2) DEFAULT NULL COMMENT '玉米腾发量(mm)',
   `ks_Maize` double(8, 2) DEFAULT NULL COMMENT '玉米的水分胁迫系数',
   `etcadj_maize` double(8, 2) DEFAULT NULL COMMENT '玉米水分胁迫下的腾发量(mm)',
   `dr_Maize` double(8, 2) DEFAULT NULL COMMENT '玉米土壤根系层的消耗水量(mm)',

@@ -146,7 +146,7 @@ public abstract class Crop {
 	 * 获取根系层深度,不在生长期返回 -1.0
 	 * @return  double： m 
 	 */
-	private double getZr() {
+	protected double getZr() {
 		double Zr = -1.0;
 		int currentDay = this.tc.getCurrentTime().getDayOfYear() - this.getSowingTime().getDayOfYear();
 		if(currentDay < 0 || currentDay > this.totalDay) return Zr;

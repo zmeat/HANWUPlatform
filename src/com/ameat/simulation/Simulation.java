@@ -47,6 +47,7 @@ public class Simulation {
 				if(this.timeController.getAnchorTime().isBefore(this.timeController.getCurrentTime())) {
 					component.anchorCompute();
 					this.timeController.nextAnchorTime();
+					this.timeController.nextYearSart();
 				}
 				component.compute();
 			}

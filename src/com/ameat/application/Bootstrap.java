@@ -17,9 +17,13 @@ public class Bootstrap {
 		
 		try {
 			TimeController timeController = new TimeController();
-			//new Simulation(timeController).run();
+			new Simulation(timeController).run();
 			
-			tempTest();
+//			new Table("FarmerTrace").delete();
+//			new Table("FarmerInit").delete();
+//			new Table("Simulation").delete();
+			
+//			tempTest();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

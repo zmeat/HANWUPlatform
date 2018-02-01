@@ -33,11 +33,17 @@ public class TimeController {
 	/**
 	 * @return DateTime : Current Time plus a Time Step. The time step could be modified
 	 */
-	public DateTime nextStepTime() {
-		if (this.stepUnit.equals("day")) this.currentTime = this.currentTime.plusDays(this.stepValue);
-		if (this.stepUnit.equals("month")) this.currentTime = this.currentTime.plusMonths(this.stepValue);
-		if (this.stepUnit.equals("hour")) this.currentTime = this.currentTime.plusHours(this.stepValue);
-		return this.currentTime;
+	public void nextStepTime() {
+//		if (this.stepUnit.equals("day"))
+			this.currentTime = this.currentTime.plusDays(this.stepValue);
+//		if (this.stepUnit.equals("month")) this.currentTime = this.currentTime.plusMonths(this.stepValue);
+//		if (this.stepUnit.equals("hour")) this.currentTime = this.currentTime.plusHours(this.stepValue);
+//		return this.currentTime;
+	}
+	
+	public void nextYearSart() {
+		while(!this.startTime.isAfter(this.currentTime)) this.startTime.plusYears(1);
+		this.currentTime = this.startTime;
 	}
 	
 	/**

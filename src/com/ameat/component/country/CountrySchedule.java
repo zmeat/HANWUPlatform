@@ -42,9 +42,9 @@ public class CountrySchedule{
 			List<Farmer> farmers = this.farmers.get(location);
 			for(Farmer farmer : farmers) {
 				// 更新数据
-				farmer.dayByDay(ET, this.isWaterLimited);
+				farmer.dayByDay(this.ET, this.isWaterLimited);
 				// 插入数据库
-				farmer.recordToFarmerTrace();
+				farmer.recordToFarmerTrace(this.ET);
 			}
 		}
 		
@@ -88,15 +88,15 @@ public class CountrySchedule{
 		Table farmerInit = new Table("FarmerInit");
 		Table simulation = new Table("Simulation");
 		Map<String, Object> record = simulation.getOne("id desc");
-		int simulationId = Integer.parseInt(record.get("sim_id").toString());
+		int simulationId = Integer.parseInt(record.get("id").toString());
 		double waterLimit = Double.parseDouble(record.get("water_limit").toString());
 		if(waterLimit > 0.0) this.isWaterLimited = true;
 		
-		List<Map<String, Object>> records = farmerInit.gets("location = ChiCheng", "sim_id="+simulationId);
+		List<Map<String, Object>> records = farmerInit.gets("location = 'ChiCheng'", "sim_id="+simulationId);
 		farmers.put("ChiCheng", this.convertRecordsToFarmer(records));
-		List<Map<String, Object>> records1 = farmerInit.gets("location = ChiCheng", "sim_id="+simulationId);
+		List<Map<String, Object>> records1 = farmerInit.gets("location = 'FengNing'", "sim_id="+simulationId);
 		farmers.put("FengNing", this.convertRecordsToFarmer(records1));
-		List<Map<String, Object>> records2 = farmerInit.gets("location = ChiCheng", "sim_id="+simulationId);
+		List<Map<String, Object>> records2 = farmerInit.gets("location = 'LuanPing'", "sim_id="+simulationId);
 		farmers.put("LuanPing", this.convertRecordsToFarmer(records2));
 		
 		return farmers;
@@ -109,7 +109,7 @@ public class CountrySchedule{
 					Integer.valueOf(record.get("farmer_no").toString()), record.get("location").toString(),
 					Integer.parseInt(record.get("farmer_number").toString()), Double.valueOf(record.get("crop_area").toString()), 
 					Double.valueOf(record.get("mu").toString()), Double.valueOf(record.get("learn").toString()), 
-					Double.valueOf(record.get("radius").toString()), Double.valueOf(record.get("senes").toString()), 
+					Double.valueOf(record.get("radius").toString()), Double.valueOf(record.get("sense").toString()), 
 					Double.valueOf(record.get("water_permit").toString())));
 		}
 		return farmers;
