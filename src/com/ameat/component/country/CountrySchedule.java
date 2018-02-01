@@ -47,7 +47,7 @@ public class CountrySchedule{
 	
 	protected void loadToAnchorCompute() {
 		
-		Table table = new Table("CountyTrace");
+		Table table = new Table("CountryTrace");
 		Map<String, Object> record = new HashMap<String, Object>();
 		
 		int sim_id = 0 ;
@@ -80,6 +80,7 @@ public class CountrySchedule{
 				maizeIncome += farmer.getMaizeIncome();
 				
 				farmer.recordToFarmerAnchor();
+				
 			}
 			for(Farmer farmer : farmers) {
 			    // 更新策略(需要根据所有农民的状况来评估自己是否更新策略)
