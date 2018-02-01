@@ -17,7 +17,6 @@ public class Bootstrap {
 		try {
 			TimeController timeController = new TimeController();
 			new Simulation(timeController).run();
-			
 //			clearTable();
 			
 //			tempTest();

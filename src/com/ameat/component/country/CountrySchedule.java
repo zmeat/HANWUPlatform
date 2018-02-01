@@ -90,7 +90,7 @@ public class CountrySchedule{
 		}
 		
 		record.put("sim_id", sim_id);
-		record.put("time", this.timeController.getCurrentTime().toString("yyyy"));
+		record.put("time", "'"+this.timeController.getCurrentTime().toString("yyyy")+"'");
 		record.put("precipitation", precipitation);
 		record.put("crop_irrigation", cropIrrigation);
 		record.put("rice_irrigation", riceIrrigation);
