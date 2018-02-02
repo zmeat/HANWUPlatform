@@ -21,10 +21,10 @@ CREATE TABLE `farmer_traces` (
   `irri_maize` double(8, 2) DEFAULT NULL COMMENT '玉米灌溉量(mm)',
   `kc_maize` double(8, 2) DEFAULT NULL COMMENT '玉米的作物系数',
   `etc_maize` double(8, 2) DEFAULT NULL COMMENT '玉米腾发量(mm)',
-  `ks_Maize` double(8, 2) DEFAULT NULL COMMENT '玉米的水分胁迫系数',
+  `ks_maize` double(8, 2) DEFAULT NULL COMMENT '玉米的水分胁迫系数',
   `etcadj_maize` double(8, 2) DEFAULT NULL COMMENT '玉米水分胁迫下的腾发量(mm)',
-  `dr_Maize` double(8, 2) DEFAULT NULL COMMENT '玉米土壤根系层的消耗水量(mm)',
-  `yield_Maize` double(8, 2) DEFAULT NULL COMMENT '玉米的累计产量(Kg/mu)',
+  `dr_maize` double(8, 2) DEFAULT NULL COMMENT '玉米土壤根系层的消耗水量(mm)',
+  `yield_maize` double(8, 2) DEFAULT NULL COMMENT '玉米的累计产量(Kg/mu)',
   `created_at` datetime DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)

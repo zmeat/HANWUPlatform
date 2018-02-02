@@ -39,7 +39,7 @@ public class CountrySchedule{
 				// 更新数据
 				farmer.dayByDay(meteInfo, this.isWaterLimited);
 				// 插入数据库
-				farmer.recordToFarmerTrace(meteInfo);
+//				farmer.recordToFarmerTrace(meteInfo);
 			}
 		}
 		
@@ -47,7 +47,7 @@ public class CountrySchedule{
 	
 	protected void loadToAnchorCompute() {
 		
-		Table table = new Table("CountyTrace");
+		Table table = new Table("CountryTrace");
 		Map<String, Object> record = new HashMap<String, Object>();
 		
 		int sim_id = 0 ;
@@ -55,7 +55,7 @@ public class CountrySchedule{
 		double cropIrrigation=0;
 		double riceIrrigation=0;
 		double maizeIrrigation=0;
-		double corpIncome=0;
+		double cropIncome=0;
 		double riceIncome=0;
 		double maizeIncome=0;
 		
@@ -75,11 +75,12 @@ public class CountrySchedule{
 				riceIrrigation += farmer.getRiceCousumeWater();
 				cropIrrigation += farmer.getCousumeWater();
 				maizeIrrigation += farmer.getMaizeConsumeWater();
-				corpIncome += farmer.getCropIncome();
+				cropIncome += farmer.getCropIncome();
 				riceIncome += farmer.getRiceIncome();
 				maizeIncome += farmer.getMaizeIncome();
 				
 				farmer.recordToFarmerAnchor();
+				
 			}
 			for(Farmer farmer : farmers) {
 			    // 更新策略(需要根据所有农民的状况来评估自己是否更新策略)
@@ -89,12 +90,12 @@ public class CountrySchedule{
 		}
 		
 		record.put("sim_id", sim_id);
-		record.put("time", this.timeController.getCurrentTime().toString("yyyy"));
+		record.put("time", this.timeController.getCurrentTime().toString("yyyy-MM-dd"));
 		record.put("precipitation", precipitation);
 		record.put("crop_irrigation", cropIrrigation);
 		record.put("rice_irrigation", riceIrrigation);
 		record.put("maize_irrigation", maizeIrrigation);
-		record.put("corp_income", corpIncome);
+		record.put("crop_income", cropIncome);
 		record.put("rice_income", riceIncome);
 		record.put("maize_income", maizeIncome);
 		

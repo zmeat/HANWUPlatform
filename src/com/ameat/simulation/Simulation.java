@@ -59,8 +59,6 @@ public class Simulation {
 				continue;
 			}
 			this.timeController.nextStepTime();
-			
-			
 		}
 		
 		// simulation end, components finished

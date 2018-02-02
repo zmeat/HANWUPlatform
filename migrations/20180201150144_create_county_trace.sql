@@ -8,8 +8,6 @@ CREATE TABLE `country_traces` (
   `crop_irrigation` double(8, 2) DEFAULT NULL COMMENT '作物水量消耗(m^3)',
   `rice_irrigation` double(8, 2) DEFAULT NULL COMMENT '水稻水量消耗(m^3)',
   `maize_irrigation` double(8, 2) DEFAULT NULL COMMENT '玉米水量消耗(m^3)',
-  `rice_yield` double(8, 2) DEFAULT NULL COMMENT '水稻产量(m^3)',
-  `maize_yield` double(8, 2) DEFAULT NULL COMMENT '玉米产量(m^3)',
   `crop_income` double(8, 2) DEFAULT NULL COMMENT '作物收入(yuan)',
   `rice_income` double(8, 2) DEFAULT NULL COMMENT '水稻收入(yuan)',
   `maize_income` double(8, 2) DEFAULT NULL COMMENT '玉米收入(yuan)',
