@@ -39,7 +39,7 @@ public class CountrySchedule{
 				// 更新数据
 				farmer.dayByDay(meteInfo, this.isWaterLimited);
 				// 插入数据库
-				farmer.recordToFarmerTrace(meteInfo);
+//				farmer.recordToFarmerTrace(meteInfo);
 			}
 		}
 		

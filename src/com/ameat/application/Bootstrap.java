@@ -2,6 +2,7 @@ package com.ameat.application;
 
 import org.javalite.activejdbc.DB;
 
+import com.ameat.simulation.Simulation;
 import com.ameat.simulation.TimeController;
 import com.ameat.tables.Table;
 
@@ -11,9 +12,9 @@ public class Bootstrap {
 		
 		try {
 			TimeController timeController = new TimeController();
-//			new Simulation(timeController).run();
+			new Simulation(timeController).run();
 //			clearTable();
-			exportTable();
+//			exportTable();
 			
 			
 		} catch (Exception e) {
@@ -34,7 +35,7 @@ public class Bootstrap {
 	}
 	
 	public static void exportTable() {
-		new Table("FarmerTrace").export();
+//		new Table("FarmerTrace").export();
 		new Table("FarmerAnchor").export();
 		new Table("FarmerInit").export();
 		new Table("Simulation").export();
