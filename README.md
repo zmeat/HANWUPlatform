@@ -1,6 +1,5 @@
 # ***HANWUPlatform : Human and nature water use platform***
 
-=====================================
 
 ## dependencies
         maven *
@@ -42,4 +41,3 @@
         mvn db-migrator:migrate
         
 
-            
