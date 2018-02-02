@@ -2,6 +2,7 @@ package com.ameat.utils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.Properties;
 public class ConfigurationLoader {
 	private static String configurationDir = "configuration/";
 	private static String tail = ".properties";
+	private static String charset = "UTF-8";
 	
 	private static Properties loadProperties(String pathName){
 		Properties properties = null;
@@ -34,18 +36,25 @@ public class ConfigurationLoader {
 	 * @return String
 	 */
 	public static String config(String str) {
-		int index = str.indexOf('.');
-		String fileName = str;
-		String propertyName = "";
-		
-		if(index > 0) {
-			fileName = str.substring(0, index);
-			propertyName = str.substring(index+1);
+		String property = "";
+		try {
+			int index = str.indexOf('.');
+			String fileName = str;
+			String propertyName = "";
+			
+			if(index > 0) {
+				fileName = str.substring(0, index);
+				propertyName = str.substring(index+1);
+			}
+			
+			Properties properties = loadProperties(configurationDir+fileName+tail);
+			property = properties.getProperty(propertyName);
+			property = new String(property.getBytes("ISO-8859-1"), charset);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 		
-		Properties properties = loadProperties(configurationDir+fileName+tail);
-		
-		return properties.getProperty(propertyName);
+		return property;
 	}
 	
 	
@@ -80,7 +89,11 @@ public class ConfigurationLoader {
 					
 					if(sindex > 0) {
 						sKey = key.substring(key.indexOf('.')+1);
-						confs.put(sKey, properties.getProperty(key));
+						try {
+							confs.put(sKey, new String(properties.getProperty(key).getBytes("ISO-8859-1"), charset));
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
 					}
 					
 				}
@@ -88,7 +101,12 @@ public class ConfigurationLoader {
 		}else {
 			while(keys.hasMoreElements()) {
 				String key = keys.nextElement().toString();
-				confs.put(key, properties.getProperty(key));
+				try {
+					confs.put(key, new String(properties.getProperty(key).getBytes("ISO-8859-1"), charset));
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		

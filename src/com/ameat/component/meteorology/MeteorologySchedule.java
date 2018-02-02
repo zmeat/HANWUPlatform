@@ -25,9 +25,9 @@ public class MeteorologySchedule {
 		
 		this.locationInfos = new HashMap<String, Location>();
 		
-		this.locationInfos.put("LuanPing", new LuanPing(timeController));
-		this.locationInfos.put("ChiCheng", new ChiCheng(timeController));
-		this.locationInfos.put("FengNing", new FengNing(timeController));
+		this.locationInfos.put("LuanPing", new Location(timeController, "LuanPing"));
+		this.locationInfos.put("ChiCheng", new Location(timeController, "ChiCheng"));
+		this.locationInfos.put("FengNing", new Location(timeController, "FengNing"));
 		
 	}
 	

@@ -1,38 +1,43 @@
-# HANWUPlatform : Human and nature water use platform
+# ***HANWUPlatform : Human and nature water use platform***
+
+
+## dependencies
+        maven *
+        mysql ^5.0
+        java =1.8
 
 ## How to use ?
 
-##### step 1. make sure application.properties file path in pom.xml
 
-##### step 2. install maven plugin in your computer
+### Configuration your project
+      configuration configuration/application.properties
+      configuration configuration/database.properties
+      configuration configuration/simulation.properties
+      configuration configuration/location.properties
 
-##### step 3. make sure your computer has installed mysql services and start services
 
-##### step 4. configure configuration/application.properties
-
-##### step 5. configure configuration/database.properties
-
-##### step 6. configure configuration/simulation.properties
-
-##### step 7. database migrations:
-		  mvn db-migrator:create         
-		  mvn db-migrator:migrate
-		  
-##### step 8. Build program:
-          mvn clean install
+### Run database migrations:
+        mvn db-migrator:create         
+        mvn db-migrator:migrate
           
-##### step 9. Instrumentation(IDE):
-          mvn process-classes  
+###  Build program:
+        mvn clean install
           
-          (or) mvn activejdbc-instrumentation:instrument
+###  Instrumentation(IDE):
+        mvn process-classes 
+        (or) mvn activejdbc-instrumentation:instrument
+
+###  Initial data
+        use InitData.java to initial project datas which is located at src/com/utils/   
           
-### Writing a new migration
-##### Generate a new migration file:
-    mvn db-migrator:new -Dname=create_example_table
-##### The newly created fle is empty. Go ahead and add raw SQL to the file:
-    create table people ( name varchar (10));......
-##### Run migration:   
-    mvn db-migrator:migrate
+##  How to write a new migration ?
+
+### Generate a new migration file:
+        mvn db-migrator:new -Dname=create_example_table
+
+### The newly created fle is empty. Go ahead and add raw SQL to the file:
+        create table people ( name varchar (10));......
+### Run migration:   
+        mvn db-migrator:migrate
         
 
-			

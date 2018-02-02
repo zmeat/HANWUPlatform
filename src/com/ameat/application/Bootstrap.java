@@ -34,6 +34,12 @@ public class Bootstrap {
 		new Table("CountryTrace").delete();
 	}
 	
+
+	// 临时的测试方法写在这里面
+	public static void tempTest() {
+  
+  }
+  
 	public static void exportTable() {
 //		new Table("FarmerTrace").export();
 		new Table("FarmerAnchor").export();

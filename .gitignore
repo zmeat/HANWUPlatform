@@ -1,7 +1,9 @@
 /bin
 /bin/*
 /target/
-./log4j.log
+log4j.log
 .DS_Store
 /resource/export/*.xlsx
 /resource/export/*.xls
+/resource/data/.DS_Store
+/resource/data/*.sql
