@@ -1,8 +1,12 @@
 package com.ameat.tables;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +17,7 @@ import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.ModelDelegate;
+import org.javalite.activejdbc.RowProcessor;
 
 import com.ameat.utils.CamelCaseHelper;
 import com.ameat.utils.ConfigurationLoader;
@@ -138,7 +143,7 @@ public class Table{
 				.limit(1)
 				.offset(0)
 				.orderBy(orderBy);
-		
+
 		return result.size() > 0 ? result.get(0).toMap() : new HashMap<String, Object>();
 	}
 
@@ -155,7 +160,7 @@ public class Table{
 				.limit(1)
 				.offset(0)
 				.orderBy(orderBy);
-		
+
 		return result.size() > 0 ? result.get(0) : null;
 	}
 
@@ -305,6 +310,43 @@ public class Table{
 		}
 		return comments;
 	}
+
+	/**
+	 * execute the original sql and return the results
+	 * @param sql
+	 * @return
+	 */
+	public static List<Map<String, Object>> exec(String sql) {
+		DB db = null;
+		if(!DB.connections().containsKey("EXEC")) {
+			db = new DB("EXEC");
+			db.open();
+		}
+		Connection conn = db.getConnection();
+		Statement res;
+		ResultSet result = null;
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		try {
+			res = conn.createStatement();
+			result = res.executeQuery(sql);
+			ResultSetMetaData md = result.getMetaData();
+			int columnCount = md.getColumnCount();
+			while (result.next()) {
+				Map<String, Object> rowData = new HashMap<String, Object>();
+				for (int i = 1; i <= columnCount; i++) {
+					rowData.put(md.getColumnName(i), result.getObject(i));
+				}
+				list.add(rowData);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.close();
+		}
+
+		return list;
+	}
+
 
 	private String buildQuery(String[] conditions) {
 		StringBuffer querySb = new StringBuffer();

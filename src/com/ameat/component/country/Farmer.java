@@ -92,8 +92,8 @@ public class Farmer {
 		this.farmerNo = farmerId;
 		this.locationStr = location;
 		this.currentMu = mu;
-		this.previousMu = Generator.Normal(mu, 0.2);
-		while(this.previousMu < 0.0 || this.previousMu > 1.0) this.previousMu = Generator.Normal(mu, 0.2);
+		this.previousMu = Generator.Normal(mu, 0.4);
+		while(this.previousMu < 0.0 || this.previousMu > 1.0) this.previousMu = Generator.Normal(mu, 0.4);
 		this.learn = learn;
 		this.radius = radius;
 		this.sense = senes;
