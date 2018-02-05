@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import com.ameat.tables.Table;
 
-public class importNoaaData {
+public class ImportNoaaData {
 	private final static String stationPath = "/Users/zmeat/gsod/isd-china.txt";
 	private final static String dataPath = "/Users/zmeat/aa/";
 	private final static DateTimeFormatter format = DateTimeFormat.forPattern("yyyyMMdd");

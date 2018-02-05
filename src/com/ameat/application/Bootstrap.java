@@ -5,27 +5,34 @@ import org.javalite.activejdbc.DB;
 import com.ameat.simulation.Simulation;
 import com.ameat.simulation.TimeController;
 import com.ameat.tables.Table;
+import static com.ameat.utils.StructuralProperties.struct;
+
+import java.util.List;
+import java.util.Map;
 
 public class Bootstrap {
-	
+
 	public static void main(String[] args) {
-		
+
 		try {
-			TimeController timeController = new TimeController();
-			new Simulation(timeController).run();
+			List<Map<String, String>> parameters = struct("simulation");
+			for(Map<String, String> params : parameters) {
+				TimeController timeController = new TimeController();
+				new Simulation(timeController, params).run();
+			}
+			
+			
 //			clearTable();
 //			exportTable();
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DB.closeAllConnections();
 		}
 	}
-	
-	
-	
+
+
+
 	public static void clearTable(){
 		new Table("FarmerTrace").delete();
 		new Table("FarmerAnchor").delete();
@@ -33,19 +40,13 @@ public class Bootstrap {
 		new Table("Simulation").delete();
 		new Table("CountryTrace").delete();
 	}
-	
 
-	// 临时的测试方法写在这里面
-	public static void tempTest() {
-  
-  }
-  
 	public static void exportTable() {
-//		new Table("FarmerTrace").export();
+		new Table("FarmerTrace").export();
 		new Table("FarmerAnchor").export();
 		new Table("FarmerInit").export();
 		new Table("Simulation").export();
 		new Table("CountryTrace").export();
 	}
-	
+
 }

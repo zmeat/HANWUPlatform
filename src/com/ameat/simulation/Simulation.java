@@ -4,9 +4,6 @@ import com.ameat.component.comunications.ComunicationInterface;
 import com.ameat.component.interfaces.CompInterface;
 import com.ameat.tables.Table;
 
-import static com.ameat.utils.ConfigurationLoader.config;
-import static com.ameat.utils.ConfigurationLoader.configs;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,20 +16,18 @@ import org.apache.log4j.Logger;
 public class Simulation {
 	
 	private TimeController timeController;
+	private Map<String, String> parameters;
 	private Logger logger = Logger.getLogger(this.getClass());
-	private Map<String, CompInterface> components;
-	private Map<String, ComunicationInterface> comunications;
+	private Map<String, CompInterface> components = new HashMap<String, CompInterface>();;
+	private Map<String, ComunicationInterface> comunications = new HashMap<String, ComunicationInterface>();;
 	private ArrayList<Integer> sequence = new ArrayList<Integer>();
 	
-	public Simulation(TimeController timeController) {
+	public Simulation(TimeController timeController, Map<String, String> parameters) {
 		this.timeController = timeController;
-		this.components = new HashMap<String, CompInterface>();
-		this.comunications = new HashMap<String, ComunicationInterface>();
+		this.parameters = parameters;
 		this.register();
 	}
 	
-
-
 	public void run() {
 		// record this time simulation record to database
 		this.recordSimulation();
@@ -86,7 +81,12 @@ public class Simulation {
 	 * register component , register comunications, register sequence
 	 */
 	private void register() {
-		Collection<String> values = configs("simulation.component").values();
+		Collection<String> values = new ArrayList<String>();
+		this.parameters.forEach((key, value) -> {
+			if(key.startsWith("component")) {
+				values.add(value);
+			}
+		});
 		for(String value: values) {
 			try {
 				Class<?> claz = Class.forName(value.split(":")[0]);
@@ -116,29 +116,31 @@ public class Simulation {
 		StringBuffer comps = new StringBuffer();
 		StringBuffer crop_areas = new StringBuffer();
 		StringBuffer farmer_numbers = new StringBuffer();
-	
-		record.put("start_time", config("simulation.starttime"));
-		record.put("end_time", config("simulation.endtime"));
-		record.put("time_step", config("simulation.timestep"));
-		record.put("anchor_time", config("simulation.anchortime"));
-		record.put("mu", config("simulation.mu"));
-		record.put("learn", config("simulation.learn"));
-		record.put("radius", config("simulation.radius"));
-		record.put("sense", config("simulation.sense"));
-		record.put("cv", config("simulation.cv"));
+		
+		record.put("start_time", this.parameters.get("starttime"));
+		record.put("end_time", this.parameters.get("endtime"));
+		record.put("time_step", this.parameters.get("timestep"));
+		record.put("anchor_time", this.parameters.get("anchortime"));
+		record.put("mu", this.parameters.get("mu"));
+		record.put("learn", this.parameters.get("learn"));
+		record.put("radius", this.parameters.get("radius"));
+		record.put("sense", this.parameters.get("sense"));
+		record.put("cv", this.parameters.get("cv"));
 		this.components.forEach((k, v) -> {
 			comps.append(v.toString().split("@")[0]+":"+k+";");
 		});
+		this.parameters.forEach((k, v) -> {
+			if(k.contains("crop_area")) {
+				crop_areas.append(k.split("\\.")[1]+":"+v+";");
+			}
+			if(k.startsWith("farmer_number")) {
+				farmer_numbers.append(k.split("\\.")[1]+":"+v+";");
+			}
+		});
 		record.put("components", comps.toString());
-		configs("simulation.crop_area").forEach((k, v) -> {
-			crop_areas.append(k+":"+v.toString()+";");
-		});
 		record.put("crop_area", crop_areas.toString());
-		configs("simulation.farmer_number").forEach((k, v) -> {
-			farmer_numbers.append(k+":"+v.toString()+";");
-		});
 		record.put("farmer_number", farmer_numbers.toString());
-		record.put("water_limit", config("simulation.water_limit"));
+		record.put("water_limit", this.parameters.get("water_limit"));
 		
 		sim.insertReturnKey(record);
 	}
