@@ -51,10 +51,17 @@ public class Table{
 		this.model.reset();
 	}
 
-	private void checkConection() {
+	private static Connection checkConection() {
+		Connection conn = null;
 		if(!DB.connections().containsKey("default")) {
-			new DB("default").open();
+			DB db = new DB("default");
+			db.open();
+			conn = db.getConnection();
+		}else {
+			conn = DB.connections().get("default");
 		}
+		
+		return conn;
 	}
 
 
@@ -317,12 +324,7 @@ public class Table{
 	 * @return
 	 */
 	public static List<Map<String, Object>> exec(String sql) {
-		DB db = null;
-		if(!DB.connections().containsKey("EXEC")) {
-			db = new DB("EXEC");
-			db.open();
-		}
-		Connection conn = db.getConnection();
+		Connection conn = checkConection();
 		Statement res;
 		ResultSet result = null;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -340,10 +342,7 @@ public class Table{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			db.close();
 		}
-
 		return list;
 	}
 
