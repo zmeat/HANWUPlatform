@@ -5,7 +5,7 @@ import org.javalite.activejdbc.DB;
 import com.ameat.simulation.Simulation;
 import com.ameat.simulation.TimeController;
 import com.ameat.tables.Table;
-import static com.ameat.utils.StructuralProperties.struct;
+import com.ameat.utils.StructuralProperties;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class Bootstrap {
 	public static void main(String[] args) {
 
 		try {
-			List<Map<String, String>> parameters = struct("simulation");
+			List<Map<String, String>> parameters = StructuralProperties.struct("simulation");
 			for(Map<String, String> params : parameters) {
 				TimeController timeController = new TimeController();
 				new Simulation(timeController, params).run();
