@@ -17,7 +17,6 @@ import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.ModelDelegate;
-import org.javalite.activejdbc.RowProcessor;
 
 import com.ameat.utils.CamelCaseHelper;
 import com.ameat.utils.ConfigurationLoader;
@@ -51,7 +50,7 @@ public class Table{
 		this.model.reset();
 	}
 
-	private static Connection checkConection() {
+	private Connection checkConection() {
 		Connection conn = null;
 		if(!DB.connections().containsKey("default")) {
 			DB db = new DB("default");
@@ -323,9 +322,9 @@ public class Table{
 	 * @param sql
 	 * @return
 	 */
-	public static List<Map<String, Object>> exec(String sql) {
-		Connection conn = checkConection();
-		Statement res;
+	public List<Map<String, Object>> exec(String sql) {
+		Connection conn = this.checkConection();
+		Statement res = null;
 		ResultSet result = null;
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
@@ -342,6 +341,13 @@ public class Table{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				result.close();
+				res.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return list;
 	}

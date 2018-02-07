@@ -120,7 +120,8 @@ public class CountrySchedule{
 		
 		Table farmerInit = new Table("FarmerInit");
 		Table simulation = new Table("Simulation");
-		Map<String, Object> record = simulation.getOne("id desc");
+		long threadId = Thread.currentThread().getId();
+		Map<String, Object> record = simulation.getOne("id desc", "thread_id = "+ threadId);
 		int simulationId = Integer.parseInt(record.get("id").toString());
 		double waterLimit = Double.parseDouble(record.get("water_limit").toString());
 		if(waterLimit > 0.0) this.isWaterLimited = true;

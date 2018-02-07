@@ -1,6 +1,5 @@
 package com.ameat.component.meteorology;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +8,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.javalite.activejdbc.DB;
-import org.javalite.activejdbc.ModelDelegate;
 import org.joda.time.DateTime;
 
 import com.ameat.simulation.TimeController;
@@ -218,7 +215,7 @@ public class Location {
 		String distanceStr = "select *,acos(sin((PI() / 180)*"+this.lat+") * sin((PI() / 180)*lat) + cos((PI() / 180)*"+this.lat+") * cos((PI() / 180)*lat) "+
 				"* cos((PI() / 180)*lon - (PI() / 180)*"+this.lng+")) * 6371 as distance from stations where endyear>'2017-12-12' order by distance asc;";
 		
-		List<Map<String, Object>> stations = Table.exec(distanceStr);
+		List<Map<String, Object>> stations = meteTable.exec(distanceStr);
 		Map<String, Object> station = stations.size() > 0 ? stations.get(0) : new HashMap<String, Object>();
 		String StationId = station.containsKey("station_id") ? station.get("station_id").toString() : "-1";
 		Map<String, Object> meteorology = meteTable.getOne("id asc", "date='"+this.timeController.getCurrentTime().toString("yyyy-MM-dd")+"'", "station_id="+StationId);

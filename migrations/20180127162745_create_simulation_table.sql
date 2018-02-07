@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS `simulations`;
 
 CREATE TABLE `simulations` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '模拟序号',
+  `thread_id` int(11) unsigned NOT NULL COMMENT '进程ID/线程ID',
   `time_step` varchar(225) DEFAULT NULL COMMENT '模拟步长',
   `start_time` varchar(255) DEFAULT NULL COMMENT '起始时间',
   `end_time` varchar(255) DEFAULT NULL COMMENT '结束时间',

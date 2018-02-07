@@ -55,7 +55,8 @@ public class CountryImpl implements CompInterface{
 	 * 根据simulation 表中的记录生成农民初始化市所需要的参数
 	 */
 	private static void generateFarmerInfos() {
-		Map<String, Object> simulation = new Table("Simulation").getOne("id desc");
+		long threadId = Thread.currentThread().getId();
+		Map<String, Object> simulation = new Table("Simulation").getOne("id desc", "thread_id = "+ threadId);
 		int sim_id = Integer.valueOf(simulation.get("id").toString());
 		Table FarmerInit = new Table("FarmerInit");
 		Map<String, String> farmerNumbers = colonToMap(simulation.get("farmer_number").toString());

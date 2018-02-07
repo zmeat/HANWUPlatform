@@ -117,6 +117,7 @@ public class Simulation {
 		StringBuffer crop_areas = new StringBuffer();
 		StringBuffer farmer_numbers = new StringBuffer();
 		
+		record.put("thread_id", Thread.currentThread().getId());
 		record.put("start_time", this.parameters.get("starttime"));
 		record.put("end_time", this.parameters.get("endtime"));
 		record.put("time_step", this.parameters.get("timestep"));

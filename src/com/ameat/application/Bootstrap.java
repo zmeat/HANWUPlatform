@@ -17,11 +17,26 @@ public class Bootstrap {
 		try {
 			List<Map<String, String>> parameters = StructuralProperties.struct("simulation");
 			for(Map<String, String> params : parameters) {
-				TimeController timeController = new TimeController();
-				new Simulation(timeController, params).run();
+				Runnable myRunnable = new Runnable(){
+				   public void run(){
+						TimeController timeController = new TimeController();
+						Simulation simulation = new Simulation(timeController, params);
+						simulation.run();
+				   }
+				};
+				Thread thread = new Thread(myRunnable);
+				thread.start();
+				System.out.println("Thread :" +thread.getId()+ " is running!!!");
+//				while(true) {
+//					if(!thread.isAlive()) { 
+//						System.gc();
+//						break;
+//					}
+//					Thread.sleep(100000);
+//				}
 			}
-			
-			
+
+
 //			clearTable();
 //			exportTable();
 		} catch (Exception e) {
